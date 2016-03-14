@@ -10,12 +10,7 @@ import sys
 import re
 import subprocess
 
-# todo: handle blockquotes, too, with leading | or with indent
-
 TARGET_LINE_LENGTH=72
-
-def getLineRegex(line_length):
-    return r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s+'
 
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
@@ -29,9 +24,7 @@ def setClipboardData(data):
     p.stdin.close()
     retcode = p.wait()
 
-#def checkForBlockOrLineQuote
-
-def handle():
+def handle(line_length):
     paragraphs = []
     para = ''
     for line in getClipboardData().split('\n'):
@@ -50,7 +43,7 @@ def handle():
     for para in paragraphs:
         concatenated += '{para}\n\n'.format(para=para)
 
-    pattern = getLineRegex(TARGET_LINE_LENGTH)
+    pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s+'
     r = re.compile(pattern)
 
     lined = ''
@@ -83,7 +76,15 @@ def handle():
     setClipboardData(lined)
 
 def main(argv=None):
-    handle()
+
+    if argv is None:
+        argv = sys.argv
+
+    if len(argv) > 1:
+        handle(argv[1])
+    else:
+        handle(TARGET_LINE_LENGTH)
+
     return 0
 
 if __name__ == '__main__':
