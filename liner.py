@@ -58,7 +58,7 @@ def handle(line_length):
     for line in lines:
         if line == '' or specialCase(line):
             if block_in_progress:
-                paragraphs.append(para)
+                paragraphs.append(para[:-1])
                 block_in_progress = False
             paragraphs.append(line)
             para = ''
@@ -78,7 +78,7 @@ def handle(line_length):
     #     concatenated += '{para}\n'.format(para=para)
     # setClipboardData(concatenated)
 
-    pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s+'
+    pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s*'
     r = re.compile(pattern)
 
     lined = ''
