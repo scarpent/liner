@@ -12,12 +12,6 @@ import subprocess
 
 TARGET_LINE_LENGTH=72
 
-bullet_pattern = r'^\s*[-*~|](?!<)'  # excludes excerpt starter ~<
-blockquote_pattern = r'^ {2,}'
-date_pattern = r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$'
-separator_pattern = r'^=====+'
-excerpt_pattern = r'^(~<|>~)'
-
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
     retcode = p.wait()
@@ -30,13 +24,15 @@ def setClipboardData(data):
     p.stdin.close()
     retcode = p.wait()
 
-def specialCase(line):
+def nonBlock(line):
     patterns = [
-        bullet_pattern,
-        date_pattern,
-        separator_pattern,
-        excerpt_pattern,
-        blockquote_pattern
+        r'^ {2,}',                              # blockquote
+        r'^\s*[-*~] ',                          # bullets
+        r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
+        r'^(~<|>~)',                            # excerpts
+        r'^\s+\|',                              # line quote
+        r'^(\s*:|\.\.)',                        # rst items
+        r'^[-#=~]{3,}',                         # separator/heading
     ]
 
     for pattern in patterns:
@@ -56,7 +52,7 @@ def handle(line_length):
     lines = getClipboardData().split('\n')
 
     for line in lines:
-        if line == '' or specialCase(line):
+        if line == '' or nonBlock(line):
             if block_in_progress:
                 paragraphs.append(para[:-1])
                 block_in_progress = False
@@ -72,11 +68,12 @@ def handle(line_length):
     #[print('{para}'.format(para=para)) for para in paragraphs]
     #print(paragraphs)
 
-    # todo: option to return unbroken...
-    # concatenated = ''
-    # for para in paragraphs:
-    #     concatenated += '{para}\n'.format(para=para)
-    # setClipboardData(concatenated)
+    if line_length < 1:
+        concatenated = ''
+        for para in paragraphs:
+            concatenated += '{para}\n'.format(para=para)
+        setClipboardData(concatenated)
+        return
 
     pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s*'
     r = re.compile(pattern)
@@ -84,7 +81,7 @@ def handle(line_length):
     lined = ''
     for para in paragraphs:
 
-        if para == '' or specialCase(para):
+        if para == '' or nonBlock(para):
             lined += '{line}\n'.format(line=para)
             continue
 
