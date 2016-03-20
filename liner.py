@@ -56,7 +56,6 @@ def handle(line_length):
     lines = getClipboardData().split('\n')
 
     for line in lines:
-        print('line: {count}'.format(count=line_count))
         if line == '' or specialCase(line):
             if block_in_progress:
                 paragraphs.append(para)
