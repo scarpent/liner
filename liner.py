@@ -12,9 +12,10 @@ import subprocess
 
 TARGET_LINE_LENGTH=72
 
-bullet_pattern = r'^\s*[-*~]'
+bullet_pattern = r'^\s*[-*~](?!<)'  # excludes excerpt starter ~<
 date_pattern = r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$'
 separator_pattern = r'^=====+'
+excerpt_pattern = r'^(~<|>~)'
 
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
@@ -29,57 +30,58 @@ def setClipboardData(data):
     retcode = p.wait()
 
 def specialCase(line):
-    if re.search(bullet_pattern, line):
-        #print('matched bullet_pattern')
-        return True
-    if re.search(date_pattern, line):
-        #print('matched date_pattern')
-        return True
-    if re.search(separator_pattern, line):
-        #print('matched separator_pattern')
-        return True
+    patterns = [
+        bullet_pattern,
+        date_pattern,
+        separator_pattern,
+        excerpt_pattern
+    ]
+
+    for pattern in patterns:
+        if re.search(pattern, line):
+            #print('matched {p}'.format(p=pattern))
+            return True
 
     return False
 
 def handle(line_length):
     paragraphs = []
     para = ''
+    block_in_progress = False
     for line in getClipboardData().split('\n'):
-        if line == '':
-            paragraphs.append(para)
+        if line == '' or specialCase(line):
+            if block_in_progress:
+                paragraphs.append(para)
+                block_in_progress = False
+            paragraphs.append(line)
             para = ''
-        elif specialCase(line):
-            paragraphs.append(para)
-            para = line
         else:
             para += line.strip() + ' '
+            block_in_progress = True
 
     if para != '':
         paragraphs.append(para)
 
-    #[print('{para}\n'.format(para=para)) for para in paragraphs]
+    #[print('{para}'.format(para=para)) for para in paragraphs]
+    #print(paragraphs)
 
-    concatenated = ''
-    for para in paragraphs:
-        concatenated += '{para}\n\n'.format(para=para)
+    # todo: option to return unbroken...
+    # concatenated = ''
+    # for para in paragraphs:
+    #     concatenated += '{para}\n'.format(para=para)
+    # setClipboardData(concatenated)
 
     pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s+'
     r = re.compile(pattern)
 
     lined = ''
-    first = True
     for para in paragraphs:
 
-        if specialCase(para):
+        if para == '' or specialCase(para):
             lined += '{line}\n'.format(line=para)
             continue
 
         m = r.search(para)
-        if not first:
-            #print('')
-            lined += '\n'
-        else:
-            first = False
 
         while m:
             m_start = m.start()
@@ -96,7 +98,7 @@ def handle(line_length):
 
             m = r.search(para, m_end)
 
-    lined = lined[:-1].strip()  # remove trailing newline
+    lined = lined[:-1]  # remove trailing newline
 
     setClipboardData(lined)
 
