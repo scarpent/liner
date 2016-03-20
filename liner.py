@@ -50,7 +50,13 @@ def handle(line_length):
     paragraphs = []
     para = ''
     block_in_progress = False
-    for line in getClipboardData().split('\n'):
+
+    # todo: file-based reading for larger files??
+    # (journal never finishes this with 6K lines)
+    lines = getClipboardData().split('\n')
+
+    for line in lines:
+        print('line: {count}'.format(count=line_count))
         if line == '' or specialCase(line):
             if block_in_progress:
                 paragraphs.append(para)
