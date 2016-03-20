@@ -12,7 +12,8 @@ import subprocess
 
 TARGET_LINE_LENGTH=72
 
-bullet_pattern = r'^\s*[-*~](?!<)'  # excludes excerpt starter ~<
+bullet_pattern = r'^\s*[-*~|](?!<)'  # excludes excerpt starter ~<
+blockquote_pattern = r'^ {2,}'
 date_pattern = r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$'
 separator_pattern = r'^=====+'
 excerpt_pattern = r'^(~<|>~)'
@@ -34,7 +35,8 @@ def specialCase(line):
         bullet_pattern,
         date_pattern,
         separator_pattern,
-        excerpt_pattern
+        excerpt_pattern,
+        blockquote_pattern
     ]
 
     for pattern in patterns:
