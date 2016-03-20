@@ -12,6 +12,10 @@ import subprocess
 
 TARGET_LINE_LENGTH=72
 
+bullet_pattern = r'^\s*[-*~]'
+date_pattern = r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$'
+separator_pattern = r'^=====+'
+
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
     retcode = p.wait()
@@ -24,6 +28,19 @@ def setClipboardData(data):
     p.stdin.close()
     retcode = p.wait()
 
+def specialCase(line):
+    if re.search(bullet_pattern, line):
+        #print('matched bullet_pattern')
+        return True
+    if re.search(date_pattern, line):
+        #print('matched date_pattern')
+        return True
+    if re.search(separator_pattern, line):
+        #print('matched separator_pattern')
+        return True
+
+    return False
+
 def handle(line_length):
     paragraphs = []
     para = ''
@@ -31,6 +48,9 @@ def handle(line_length):
         if line == '':
             paragraphs.append(para)
             para = ''
+        elif specialCase(line):
+            paragraphs.append(para)
+            para = line
         else:
             para += line.strip() + ' '
 
@@ -49,9 +69,14 @@ def handle(line_length):
     lined = ''
     first = True
     for para in paragraphs:
+
+        if specialCase(para):
+            lined += '{line}\n'.format(line=para)
+            continue
+
         m = r.search(para)
         if not first:
-            print('')
+            #print('')
             lined += '\n'
         else:
             first = False
