@@ -41,9 +41,6 @@ def isNonBlock(line):
 
     return False
 
-def getBlockquoteIndent(para):
-    return '    '
-
 def handle(line_length):
     paragraphs = []
     para = ''
@@ -54,6 +51,7 @@ def handle(line_length):
     lines = getClipboardData().split('\n')
 
     for line in lines:
+        line = line.rstrip()
         if line == '' or isNonBlock(line):
             if block_in_progress:
                 block_in_progress = False
@@ -65,7 +63,7 @@ def handle(line_length):
             if para == '':
                 # preserve leading spaces; first line indicates
                 # blockquote indent for whole para (*if* a blockquote)
-                para += line.rstrip() + ' '
+                para += line + ' '
             else:
                 para += line.strip() + ' '
 
@@ -89,8 +87,7 @@ def handle(line_length):
             lined += '{line}\n'.format(line=para)
             continue
 
-        # blockquote handling...
-        indent = getBlockquoteIndent(para)
+        indent = re.sub(r'[^ ].*$', '', para)
         if indent == '':
             length = str(line_length)
         else:
