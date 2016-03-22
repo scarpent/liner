@@ -24,9 +24,8 @@ def setClipboardData(data):
     p.stdin.close()
     retcode = p.wait()
 
-def nonBlock(line):
+def isNonBlock(line):
     patterns = [
-        r'^ {2,}',                              # blockquote
         r'^\s*[-*~] ',                          # bullets
         r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
         r'^(~<|>~)',                            # excerpts
@@ -42,6 +41,9 @@ def nonBlock(line):
 
     return False
 
+def getBlockquoteIndent(para):
+    return '    '
+
 def handle(line_length):
     paragraphs = []
     para = ''
@@ -52,15 +54,20 @@ def handle(line_length):
     lines = getClipboardData().split('\n')
 
     for line in lines:
-        if line == '' or nonBlock(line):
+        if line == '' or isNonBlock(line):
             if block_in_progress:
-                paragraphs.append(para[:-1])
                 block_in_progress = False
+                paragraphs.append(para[:-1])
             paragraphs.append(line)
             para = ''
         else:
-            para += line.strip() + ' '
             block_in_progress = True
+            if para == '':
+                # preserve leading spaces; first line indicates
+                # blockquote indent for whole para (*if* a blockquote)
+                para += line.rstrip() + ' '
+            else:
+                para += line.strip() + ' '
 
     if para != '':
         paragraphs.append(para)
@@ -75,16 +82,23 @@ def handle(line_length):
         setClipboardData(concatenated)
         return
 
-    pattern = r'(.{0,' + str(line_length) + r'}(?![^\s])|[^\s]+)\s*'
-    r = re.compile(pattern)
-
     lined = ''
     for para in paragraphs:
 
-        if para == '' or nonBlock(para):
+        if para == '' or isNonBlock(para):
             lined += '{line}\n'.format(line=para)
             continue
 
+        # blockquote handling...
+        indent = getBlockquoteIndent(para)
+        if indent == '':
+            length = str(line_length)
+        else:
+            para = para.lstrip()
+            length = str(line_length - len(indent))
+
+        pattern = r'(.{0,' + length + r'}(?![^\s])|[^\s]+)\s*'
+        r = re.compile(pattern)
         m = r.search(para)
 
         while m:
@@ -93,7 +107,10 @@ def handle(line_length):
             m_match = para[m_start:m_end]
 
             #print(m_match)
-            lined += '{line}\n'.format(line=m_match)
+            lined += '{indent}{line}\n'.format(
+                indent=indent,
+                line=m_match
+            )
 
             if m_end == len(para):  # infinite loop if
                 break               #    m_start == m_end == len(para)
