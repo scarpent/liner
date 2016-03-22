@@ -134,20 +134,3 @@ def main(argv=None):
 
 if __name__ == '__main__':
     sys.exit(main())
-
-
-lorem = '''
-Tempora amet occaecat occaecat adipisicing or eaque. Do unde veniam. Suscipit dolore and eos or minim for magnam or perspiciatis aliqua. Eos aut. Elit perspiciatis culpa inventore beatae. Ipsa ut so quaerat. Esse inventore modi. Aliqua. Ut laudantium so ad laboris incididunt duis. Rem commodo eius but magna for inventore dolore.
-
-Aspernatur culpa. Consequatur illum. Nostrum aliquip anim. Commodo minim or in, magni yet tempor or irure. Enim duis ullamco but est non. Aut consequat yet accusantium. Fugit excepteur corporis, labore id sed. Id suscipit. Illum tempora. Architecto velit exercitation so incidunt. Proident ad yet ipsam so sed for aliqua. Ullam beatae. Iste id but eum yet irure, incididunt. Ab cupidatat but quia for pariatur nihil and qui. Incidunt eos nulla or id nostrud, but natus but unde. Vitae illum voluptas, iure or aliquam or ipsa. Dolores irure. Eius nihil, sunt aliquam magnam. Quisquam est, iste or est. Enim dolore illo. Pariatur eos laboriosam, yet consequatur. Nihil qui. Architecto quasi ea do, and quae but proident.
-
-Laudantium dicta or irure. Sequi ex. Nemo ex. Omnis architecto natus yet aut for dolores for elit yet id. Ex nulla, yet `autem but <magnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagnamagna>`__ so magna. Accusantium. Laboriosam velit. Est culpa, but aliqua and dicta aute quae for exercitation. Veritatis ex eius and elit. Eiusmod. Veritatis commodo sunt, quaerat or magnam, or modi. Nesciunt tempora and voluptas. Consequat ipsum but incidunt.
-
-    Aspernatur culpa. Consequatur illum. Nostrum aliquip anim. Commodo minim or in, magni yet tempor or irure. Enim duis ullamco
-    but est non. Aut consequat yet accusantium. Fugit excepteur corporis, labore id sed. Id suscipit. Illum
-    tempora. Architecto velit exercitation so
-    incidunt. Proident ad yet ipsam so sed for aliqua. Ullam beatae. Iste id but eum yet irure, incididunt. Ab cupidatat but quia for pariatur nihil and qui. Incidunt eos nulla or id nostrud, but natus but unde. Vitae
-    illum voluptas, iure or aliquam or ipsa. Dolores irure.
-    Eius nihil, sunt aliquam magnam. Quisquam
-    est, iste or est. Enim dolore illo. Pariatur eos laboriosam, yet consequatur. Nihil qui. Architecto quasi ea do, and quae but proident.
-'''
