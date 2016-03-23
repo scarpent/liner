@@ -10,7 +10,9 @@ import sys
 import re
 import subprocess
 
-TARGET_LINE_LENGTH=72
+TARGET_LINE_LENGTH = 72
+TEMP_FILE = 'liner_temp_file'
+from_file = False
 
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
@@ -41,16 +43,12 @@ def isNonBlock(line):
 
     return False
 
-def handle(line_length):
+def handle(file, line_length=TARGET_LINE_LENGTH):
     paragraphs = []
     para = ''
     block_in_progress = False
 
-    # todo: file-based reading for larger files??
-    # (journal never finishes this with 6K lines)
-    lines = getClipboardData().split('\n')
-
-    for line in lines:
+    for line in file:
         line = line.rstrip()
         if line == '' or isNonBlock(line):
             if block_in_progress:
@@ -125,11 +123,19 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    if len(argv) > 1:
-        handle(argv[1])
-    else:
-        handle(TARGET_LINE_LENGTH)
+    line_length = TARGET_LINE_LENGTH
 
+    if len(argv) > 1:
+        if argv[1] == '-f':
+            # no line length option on files
+            handle(open(argv[2], 'r'))
+            return 0
+        else:
+            line_length = argv[1]
+
+    with open(TEMP_FILE, 'w') as the_file:
+        the_file.write(getClipboardData())
+    handle(open(TEMP_FILE, 'r'), line_length)
     return 0
 
 if __name__ == '__main__':
