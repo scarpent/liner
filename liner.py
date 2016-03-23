@@ -6,13 +6,13 @@ __website__ = 'http://movingtofreedom.org'
 __date__ = '$Mar 2, 2016 6:31 AM$'
 __license__ = 'GPL v3+'
 
-import sys
-import re
+import os
 import subprocess
+import re
+import sys
 
 TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
-from_file = False
 
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
@@ -116,7 +116,8 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
 
     lined = lined[:-1]  # remove trailing newline
 
-    setClipboardData(lined)
+    return lined
+
 
 def main(argv=None):
 
@@ -127,15 +128,20 @@ def main(argv=None):
 
     if len(argv) > 1:
         if argv[1] == '-f':
+            fileloc = argv[2]
             # no line length option on files
-            handle(open(argv[2], 'r'))
+            lined = handle(open(fileloc, 'r'))
+            with open(fileloc + "_lined", 'w') as the_file:
+                the_file.write(lined)
             return 0
         else:
             line_length = argv[1]
 
     with open(TEMP_FILE, 'w') as the_file:
         the_file.write(getClipboardData())
-    handle(open(TEMP_FILE, 'r'), line_length)
+    lined = handle(open(TEMP_FILE, 'r'), line_length)
+    setClipboardData(lined)
+    os.remove(TEMP_FILE)
     return 0
 
 if __name__ == '__main__':
