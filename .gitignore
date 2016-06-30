@@ -1,2 +1,4 @@
 liner_temp_file
 *_lined
+*pyc
+.coverage
