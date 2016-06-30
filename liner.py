@@ -1,15 +1,18 @@
 #!/usr/bin/python
+
 from __future__ import division
 from __future__ import print_function
+
+import os
+import re
+import subprocess
+import sys
+
 __author__ = 'Scott Carpenter'
 __website__ = 'http://movingtofreedom.org'
 __date__ = '$Mar 2, 2016 6:31 AM$'
 __license__ = 'GPL v3+'
 
-import os
-import subprocess
-import re
-import sys
 
 TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
@@ -32,7 +35,7 @@ def isNonBlock(line):
         r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
         r'^(~<|>~)',                            # excerpts
         r'^\s+\|',                              # line quote
-        r'^(\s*:|\.\. )',                        # rst items
+        r'^(\s*:|\.\. )',                       # rst items
         r'^[-#=~]{3,}',                         # separator/heading
     ]
 

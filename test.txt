@@ -32,3 +32,19 @@ nulla sed consectetur. Nulla vitae elit libero, a pharetra augue.
 * nisi erat porttitor ligula
 * eget lacinia odio sem nec elit.
 >~
+
+ |  This
+ |  is
+ |  a
+ |  line
+ |  quote.
+
+
+.. |fossil shark teeth, from wikimedia| image:: /images/2012/11/wikimedia-800px-Fossil_Shark_Teeth_Folklore_Divination_tools-275x275.jpg
+   :class: imgfloatright
+   :target: http://commons.wikimedia.org/wiki/File:Fossil_Shark_Teeth_Folklore_Divination_tools.jpg
+
+qwerty
+------
+
+======
