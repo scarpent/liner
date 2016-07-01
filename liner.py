@@ -69,19 +69,18 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
                 para += line.strip() + ' '
 
     if para != '':
-        paragraphs.append(para)
+        paragraphs.append(para[:-1])
 
     #[print('{para}'.format(para=para)) for para in paragraphs]
     #print(paragraphs)
 
-    if line_length < 1:
-        concatenated = ''
-        for para in paragraphs:
-            concatenated += '{para}\n'.format(para=para)
-        setClipboardData(concatenated)
-        return
-
     lined = ''
+
+    if int(line_length) < 1:
+        for para in paragraphs:
+            lined += '{para}\n'.format(para=para)
+        return lined[:-1]
+
     for para in paragraphs:
 
         if para == '' or isNonBlock(para):
