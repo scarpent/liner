@@ -3,10 +3,6 @@
 """unit tests for liner.py"""
 
 import unittest
-import os
-import sys
-
-from StringIO import StringIO
 
 import liner
 
