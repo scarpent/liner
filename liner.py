@@ -109,10 +109,13 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
                 line=m_match
             )
 
-            if m_end == len(para):  # infinite loop if
-                break               #    m_start == m_end == len(para)
-            elif m_start == m_end:  # zero-width match;
-                m_end += 1          #    keep things moving along
+            if m_end == len(para):
+                # infinite loop if m_start == m_end == len(para)
+                break
+            elif m_start == m_end:
+                # zero-width match; keep things moving along
+                # (this may be impossible with our regex)
+                m_end += 1  # pragma: no cover
 
             m = r.search(para, m_end)
 
@@ -124,7 +127,7 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
 def main(argv=None):
 
     if argv is None:
-        argv = sys.argv
+        argv = sys.argv  # pragma: no cover
 
     line_length = TARGET_LINE_LENGTH
 
@@ -147,4 +150,4 @@ def main(argv=None):
     return 0
 
 if __name__ == '__main__':
-    sys.exit(main())
+    sys.exit(main())  # pragma: no cover

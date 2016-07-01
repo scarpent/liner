@@ -23,6 +23,12 @@ def read_file(filename):
 
 class Tests(unittest.TestCase):
 
+    def setUp(self):
+        self.save_clipboard = liner.getClipboardData()
+
+    def tearDown(self):
+        liner.setClipboardData(self.save_clipboard)
+
     def testMainFileInput(self):
         liner.main(['liner.py', '-f', 'test.txt'])
         expected = read_file('test.txt_lined_expected')
@@ -41,7 +47,6 @@ class Tests(unittest.TestCase):
         liner.main(['liner.py', 0])
         actual = liner.getClipboardData()
         self.assertEqual(expected, actual)
-
 
 
 if __name__ == "__main__":
