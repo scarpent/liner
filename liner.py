@@ -106,7 +106,7 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
             #print(m_match)
             lined += '{indent}{line}\n'.format(
                 indent=indent,
-                line=m_match
+                line=m_match.rstrip()
             )
 
             if m_end == len(para):
