@@ -76,7 +76,7 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
 
     lined = ''
 
-    if int(line_length) < 1:
+    if line_length < 1:
         for para in paragraphs:
             lined += '{para}\n'.format(para=para)
         return lined[:-1]
@@ -140,7 +140,7 @@ def main(argv=None):
                 the_file.write(lined)
             return 0
         else:
-            line_length = argv[1]
+            line_length = int(argv[1])
 
     with open(TEMP_FILE, 'w') as the_file:
         the_file.write(getClipboardData())
