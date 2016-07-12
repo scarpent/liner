@@ -38,6 +38,14 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_bullets.txt_lined')
         self.assertEqual(expected, actual)
 
+    def testMainFileNoEof(self):
+        liner.main(['liner.py', '-f', 'tests/test_eof_no_newline.txt'])
+        expected = read_file(
+            'tests/test_eof_no_newline.txt_lined_expected'
+        )
+        actual = read_file('tests/test_eof_no_newline.txt_lined')
+        self.assertEqual(expected, actual)
+
     def testClipboard(self):
         expected = "Blah blah blah blah"
         liner.set_clipboard_data(expected)
