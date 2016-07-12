@@ -40,8 +40,11 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
     paragraphs = []
     para = u''
     block_in_progress = False
+    trailing_newline = False
 
     for line in the_file:
+        trailing_newline = u'\n' in line
+
         line = line.rstrip()
         if line == u'' or is_non_block(line):
             if block_in_progress:
@@ -106,6 +109,9 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
             m = r.search(para, m_end)
 
     lined = lined[:-1]  # remove trailing newline
+
+    if trailing_newline:
+        lined += u'\n'
 
     return lined
 
