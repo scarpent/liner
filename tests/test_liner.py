@@ -32,13 +32,13 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test.txt_lined')
         self.assertEqual(expected, actual)
 
-    def testMainFileInputBullets(self):
+    def testBullets(self):
         liner.main(['liner.py', '-f', 'tests/test_bullets.txt'])
         expected = read_file('tests/test_bullets.txt_lined_expected')
         actual = read_file('tests/test_bullets.txt_lined')
         self.assertEqual(expected, actual)
 
-    def testMainFileNoEofNewline(self):
+    def testNoEofNewline(self):
         liner.main(['liner.py', '-f', 'tests/test_eof_no_newline.txt'])
         expected = read_file(
             'tests/test_eof_no_newline.txt_lined_expected'
@@ -46,7 +46,7 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_eof_no_newline.txt_lined')
         self.assertEqual(expected, actual)
 
-    def testMainFileEofNewline(self):
+    def testEofNewline(self):
         liner.main(['liner.py', '-f', 'tests/test_eof_newline.txt'])
         expected = read_file(
             'tests/test_eof_newline.txt_lined_expected'
