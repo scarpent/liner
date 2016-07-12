@@ -122,7 +122,7 @@ def set_clipboard_data(data):
     p.stdin.write(data)
     p.stdin.close()
     retcode = p.wait()
-    
+
 
 def get_file(filepath):
     return codecs.open(filepath, 'r', encoding='utf8')

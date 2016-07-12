@@ -52,6 +52,13 @@ class Tests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
+    def testLineLengthBadString(self):
+        liner.set_clipboard_data('Lorem ipsum dolor sit amet')
+        liner.main(['liner.py', "abc"])
+        expected = 'Lorem ipsum dolor sit amet'
+        actual = liner.get_clipboard_data()
+        self.assertEqual(expected, actual)
+
 
 if __name__ == "__main__":
     unittest.main()         # pragma: no cover
