@@ -19,20 +19,6 @@ TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
 
 
-def get_clipboard_data():
-    p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
-    retcode = p.wait()
-    data = p.stdout.read()
-    return data
-
-
-def set_clipboard_data(data):
-    p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
-    p.stdin.write(data)
-    p.stdin.close()
-    retcode = p.wait()
-
-
 def is_non_block(line):
     patterns = [
         r'^\s*[-*~] ',                          # bullets
@@ -123,6 +109,20 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
 
     return lined
 
+
+def get_clipboard_data():
+    p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
+    retcode = p.wait()
+    data = p.stdout.read()
+    return data
+
+
+def set_clipboard_data(data):
+    p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
+    p.stdin.write(data)
+    p.stdin.close()
+    retcode = p.wait()
+    
 
 def get_file(filepath):
     return codecs.open(filepath, 'r', encoding='utf8')
