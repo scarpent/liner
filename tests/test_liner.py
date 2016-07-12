@@ -27,9 +27,9 @@ class Tests(unittest.TestCase):
         liner.set_clipboard_data(self.save_clipboard)
 
     def testMainFileInput(self):
-        liner.main(['liner.py', '-f', 'test.txt'])
-        expected = read_file('test.txt_lined_expected')
-        actual = read_file('test.txt_lined')
+        liner.main(['liner.py', '-f', 'tests/test.txt'])
+        expected = read_file('tests/test.txt_lined_expected')
+        actual = read_file('tests/test.txt_lined')
         self.assertEqual(expected, actual)
 
     def testClipboard(self):
