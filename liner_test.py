@@ -21,10 +21,10 @@ def read_file(filename):
 class Tests(unittest.TestCase):
 
     def setUp(self):
-        self.save_clipboard = liner.getClipboardData()
+        self.save_clipboard = liner.get_clipboard_data()
 
     def tearDown(self):
-        liner.setClipboardData(self.save_clipboard)
+        liner.set_clipboard_data(self.save_clipboard)
 
     def testMainFileInput(self):
         liner.main(['liner.py', '-f', 'test.txt'])
@@ -34,22 +34,22 @@ class Tests(unittest.TestCase):
 
     def testClipboard(self):
         expected = "Blah blah blah blah"
-        liner.setClipboardData(expected)
-        actual = liner.getClipboardData()
+        liner.set_clipboard_data(expected)
+        actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
     def testLineLengthLessThanOne(self):
         expected = 'Lorem ipsum dolor sit amet'
-        liner.setClipboardData(expected)
+        liner.set_clipboard_data(expected)
         liner.main(['liner.py', 0])
-        actual = liner.getClipboardData()
+        actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
     def testLineLengthAsString(self):
-        liner.setClipboardData('Lorem ipsum dolor sit amet')
+        liner.set_clipboard_data('Lorem ipsum dolor sit amet')
         liner.main(['liner.py', "017"])
         expected = 'Lorem ipsum dolor\nsit amet'
-        actual = liner.getClipboardData()
+        actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
 

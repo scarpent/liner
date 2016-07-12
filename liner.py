@@ -19,21 +19,21 @@ TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
 
 
-def getClipboardData():
+def get_clipboard_data():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
     retcode = p.wait()
     data = p.stdout.read()
     return data
 
 
-def setClipboardData(data):
+def set_clipboard_data(data):
     p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
     p.stdin.write(data)
     p.stdin.close()
     retcode = p.wait()
 
 
-def isNonBlock(line):
+def is_non_block(line):
     patterns = [
         r'^\s*[-*~] ',                          # bullets
         r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
@@ -57,7 +57,7 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
 
     for line in the_file:
         line = line.rstrip()
-        if line == u'' or isNonBlock(line):
+        if line == u'' or is_non_block(line):
             if block_in_progress:
                 block_in_progress = False
                 paragraphs.append(para[:-1])
@@ -84,7 +84,7 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
 
     for para in paragraphs:
 
-        if para == u'' or isNonBlock(para):
+        if para == u'' or is_non_block(para):
             lined += '{line}\n'.format(line=para)
             continue
 
@@ -156,9 +156,9 @@ def main(argv=None):
             except ValueError:
                 line_length = TARGET_LINE_LENGTH
 
-    write_file(TEMP_FILE, getClipboardData())
+    write_file(TEMP_FILE, get_clipboard_data())
     lined = handle(get_file(TEMP_FILE), line_length)
-    setClipboardData(lined)
+    set_clipboard_data(lined)
     os.remove(TEMP_FILE)
     return 0
 
