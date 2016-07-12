@@ -17,6 +17,7 @@ def read_file(filename):
     f.close()
     return filedata
 
+
 class Tests(unittest.TestCase):
 
     def setUp(self):

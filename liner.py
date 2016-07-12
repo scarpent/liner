@@ -3,6 +3,7 @@
 from __future__ import division
 from __future__ import print_function
 
+import codecs
 import os
 import re
 import subprocess
@@ -17,17 +18,20 @@ __license__ = 'GPL v3+'
 TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
 
+
 def getClipboardData():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
     retcode = p.wait()
     data = p.stdout.read()
     return data
 
+
 def setClipboardData(data):
     p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
     p.stdin.write(data)
     p.stdin.close()
     retcode = p.wait()
+
 
 def isNonBlock(line):
     patterns = [
@@ -41,54 +45,51 @@ def isNonBlock(line):
 
     for pattern in patterns:
         if re.search(pattern, line):
-            #print('matched {p}'.format(p=pattern))
             return True
 
     return False
 
-def handle(file, line_length=TARGET_LINE_LENGTH):
+
+def handle(the_file, line_length=TARGET_LINE_LENGTH):
     paragraphs = []
-    para = ''
+    para = u''
     block_in_progress = False
 
-    for line in file:
+    for line in the_file:
         line = line.rstrip()
-        if line == '' or isNonBlock(line):
+        if line == u'' or isNonBlock(line):
             if block_in_progress:
                 block_in_progress = False
                 paragraphs.append(para[:-1])
             paragraphs.append(line)
-            para = ''
+            para = u''
         else:
             block_in_progress = True
             if para == '':
                 # preserve leading spaces; first line indicates
                 # blockquote indent for whole para (*if* a blockquote)
-                para += line + ' '
+                para += line + u' '
             else:
-                para += line.strip() + ' '
+                para += line.strip() + u' '
 
-    if para != '':
+    if para != u'':
         paragraphs.append(para[:-1])
 
-    #[print('{para}'.format(para=para)) for para in paragraphs]
-    #print(paragraphs)
+    lined = u''
 
-    lined = ''
-
-    if line_length < 1:
+    if int(line_length) < 1:
         for para in paragraphs:
-            lined += '{para}\n'.format(para=para)
+            lined += u'{para}\n'.format(para=para)
         return lined[:-1]
 
     for para in paragraphs:
 
-        if para == '' or isNonBlock(para):
+        if para == u'' or isNonBlock(para):
             lined += '{line}\n'.format(line=para)
             continue
 
-        indent = re.sub(r'[^ ].*$', '', para)
-        if indent == '':
+        indent = re.sub(r'[^ ].*$', u'', para)
+        if indent == u'':
             length = str(line_length)
         else:
             para = para.lstrip()
@@ -103,8 +104,7 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
             m_end = m.end()
             m_match = para[m_start:m_end]
 
-            #print(m_match)
-            lined += '{indent}{line}\n'.format(
+            lined += u'{indent}{line}\n'.format(
                 indent=indent,
                 line=m_match.rstrip()
             )
@@ -124,6 +124,15 @@ def handle(file, line_length=TARGET_LINE_LENGTH):
     return lined
 
 
+def get_file(filepath):
+    return codecs.open(filepath, 'r', encoding='utf8')
+
+
+def write_file(filepath, data):
+    with codecs.open(filepath, 'w', encoding='utf8') as the_file:
+        the_file.write(data)
+
+
 def main(argv=None):
 
     if argv is None:
@@ -135,16 +144,20 @@ def main(argv=None):
         if argv[1] == '-f':
             fileloc = argv[2]
             # no line length option on files
-            lined = handle(open(fileloc, 'r'))
-            with open(fileloc + "_lined", 'w') as the_file:
-                the_file.write(lined)
+            lined = handle(get_file(fileloc))
+            write_file(
+                '{filepath}_lined'.format(filepath=fileloc),
+                lined
+            )
             return 0
         else:
-            line_length = int(argv[1])
+            try:
+                line_length = int(argv[1])
+            except ValueError:
+                line_length = TARGET_LINE_LENGTH
 
-    with open(TEMP_FILE, 'w') as the_file:
-        the_file.write(getClipboardData())
-    lined = handle(open(TEMP_FILE, 'r'), line_length)
+    write_file(TEMP_FILE, getClipboardData())
+    lined = handle(get_file(TEMP_FILE), line_length)
     setClipboardData(lined)
     os.remove(TEMP_FILE)
     return 0

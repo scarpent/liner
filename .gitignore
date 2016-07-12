@@ -2,3 +2,5 @@ liner_temp_file
 *_lined
 *pyc
 .coverage
+*iml
+.idea
