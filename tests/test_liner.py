@@ -54,6 +54,14 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_eof_newline.txt_lined')
         self.assertEqual(expected, actual)
 
+    def testJournalDate(self):
+        liner.main(['liner.py', '-f', 'tests/test_journal_date.txt'])
+        expected = read_file(
+            'tests/test_journal_date.txt_lined_expected'
+        )
+        actual = read_file('tests/test_journal_date.txt_lined')
+        self.assertEqual(expected, actual)
+
     def testClipboard(self):
         expected = "Blah blah blah blah"
         liner.set_clipboard_data(expected)
