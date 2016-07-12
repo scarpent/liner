@@ -110,6 +110,7 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
 
     lined = lined[:-1]  # remove trailing newline
 
+    # put back trailing line if original file had it
     if trailing_newline:
         lined += u'\n'
 
