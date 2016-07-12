@@ -38,7 +38,7 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_bullets.txt_lined')
         self.assertEqual(expected, actual)
 
-    def testMainFileNoEof(self):
+    def testMainFileNoEofNewline(self):
         liner.main(['liner.py', '-f', 'tests/test_eof_no_newline.txt'])
         expected = read_file(
             'tests/test_eof_no_newline.txt_lined_expected'
