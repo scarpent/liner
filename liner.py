@@ -69,6 +69,8 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
     if int(line_length) < 1:
         for para in paragraphs:
             lined += u'{para}\n'.format(para=para)
+        if trailing_newline:
+            lined += u'\n'
         return lined[:-1]
 
     for para in paragraphs:

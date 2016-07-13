@@ -99,6 +99,13 @@ class Tests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
+    def testLineLengthLessThanOneAndNewline(self):
+        expected = 'Lorem ipsum dolor sit amet\n'
+        liner.set_clipboard_data(expected)
+        liner.main(['liner.py', 0])
+        actual = liner.get_clipboard_data()
+        self.assertEqual(expected, actual)
+
     def testLineLengthAsString(self):
         liner.set_clipboard_data('Lorem ipsum dolor sit amet')
         liner.main(['liner.py', "017"])
