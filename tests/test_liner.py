@@ -70,6 +70,14 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_excerpt.txt_lined')
         self.assertEqual(expected, actual)
 
+    def testLineQuote(self):
+        liner.main(['liner.py', '-f', 'tests/test_line_quote.txt'])
+        expected = read_file(
+            'tests/test_line_quote.txt_lined_expected'
+        )
+        actual = read_file('tests/test_line_quote.txt_lined')
+        self.assertEqual(expected, actual)
+
     def testClipboard(self):
         expected = "Blah blah blah blah"
         liner.set_clipboard_data(expected)
