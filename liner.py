@@ -66,6 +66,7 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
 
     lined = u''
 
+    # if less than one, return the joined lines
     if int(line_length) < 1:
         for para in paragraphs:
             lined += u'{para}\n'.format(para=para)
