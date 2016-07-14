@@ -2,6 +2,7 @@
 
 """unit tests for liner.py"""
 
+import codecs
 import unittest
 
 import liner
@@ -12,7 +13,7 @@ __date__ = "$Jun 30, 2016 6:00 PM$"
 
 
 def read_file(filename):
-    f = open(filename, 'r')
+    f = codecs.open(filename, 'r', encoding='utf-8')
     filedata = f.read()
     f.close()
     return filedata
@@ -86,6 +87,15 @@ class Tests(unittest.TestCase):
         actual = read_file('tests/test_rst_items.txt_lined')
         self.assertEqual(expected, actual)
 
+    def testUtfDash8(self):
+        """ utf8 encoding only "kind of" worked; utf-8 needed here """
+        liner.main(['liner.py', '-f', 'tests/test_utf_dash_8.txt'])
+        expected = read_file(
+            'tests/test_utf_dash_8.txt_lined_expected'
+        )
+        actual = read_file('tests/test_utf_dash_8.txt_lined')
+        self.assertEqual(expected, actual)
+
     def testClipboard(self):
         expected = "Blah blah blah blah"
         liner.set_clipboard_data(expected)
@@ -107,6 +117,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def testLineLengthLessThanOneAndMultipleLines(self):
+        """ lines are joined """
         expected = (
             'Vivamus sagittis lacus vel augue laoreet rutrum '
             'faucibus dolor auctor. Nullam quis risus eget urna '

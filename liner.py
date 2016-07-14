@@ -43,6 +43,8 @@ def handle(the_file, line_length=TARGET_LINE_LENGTH):
     trailing_newline = False
 
     for line in the_file:
+
+        # we'll want to know this for last line in file
         trailing_newline = u'\n' in line
 
         line = line.rstrip()
@@ -135,11 +137,11 @@ def set_clipboard_data(data):
 
 
 def get_file(filepath):
-    return codecs.open(filepath, 'r', encoding='utf8')
+    return codecs.open(filepath, 'r', encoding='utf-8')
 
 
 def write_file(filepath, data):
-    with codecs.open(filepath, 'w', encoding='utf8') as the_file:
+    with codecs.open(filepath, 'w', encoding='utf-8') as the_file:
         the_file.write(data)
 
 
