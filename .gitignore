@@ -4,3 +4,4 @@ liner_temp_file
 .coverage
 *iml
 .idea
+htmlcov
