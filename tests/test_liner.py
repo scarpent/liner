@@ -19,9 +19,12 @@ def read_file(filename):
     return filedata
 
 
-def get_expected_and_actual(testfile):
+def get_expected_and_actual(testfile, line_length=None):
     testfile = 'tests/files/' + testfile
-    liner.main(['-f', testfile])
+    if line_length:
+        liner.main(['-f', testfile, '-l', line_length])
+    else:
+        liner.main(['-f', testfile])
     expected = read_file(testfile + '_lined_expected')
     actual = read_file(testfile + '_lined')
     return expected, actual
@@ -78,6 +81,11 @@ class Tests(unittest.TestCase):
     def testRstItems(self):
         testfile = 'test_rst_items.txt'
         expected, actual = get_expected_and_actual(testfile)
+        self.assertEqual(expected, actual)
+
+    def testFileLineLength30(self):
+        testfile = 'test_file_line_length_30.txt'
+        expected, actual = get_expected_and_actual(testfile, '30')
         self.assertEqual(expected, actual)
 
     def testUtfDash8(self):

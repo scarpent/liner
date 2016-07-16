@@ -156,17 +156,16 @@ def main(argv=None):
     args = ArgHandler.get_args(argv)
 
     if args.file:
-        lined = handle(get_file(args.file))
+        lined = handle(get_file(args.file), args.line_length)
         write_file(
             '{filepath}_lined'.format(filepath=args.file),
             lined
         )
-        return 0
-
-    write_file(TEMP_FILE, get_clipboard_data())
-    lined = handle(get_file(TEMP_FILE), args.line_length)
-    set_clipboard_data(lined)
-    os.remove(TEMP_FILE)
+    else:
+        write_file(TEMP_FILE, get_clipboard_data())
+        lined = handle(get_file(TEMP_FILE), args.line_length)
+        set_clipboard_data(lined)
+        os.remove(TEMP_FILE)
 
 if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover
