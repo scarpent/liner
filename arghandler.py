@@ -35,8 +35,9 @@ class ArgHandler(object):
 
         parser.add_argument(
             '-l', '--line-length',
-            type=int, default=DEFAULT_LINE_LENGTH,
+            type=int,
             metavar='LEN',
+            default=DEFAULT_LINE_LENGTH,
             help='line length; if less than 1, join lines and exit',
         )
 
