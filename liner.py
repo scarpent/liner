@@ -9,13 +9,16 @@ import re
 import subprocess
 import sys
 
+from arghandler import ArgHandler
+from arghandler import DEFAULT_LINE_LENGTH
+
+
 __author__ = 'Scott Carpenter'
-__website__ = 'http://movingtofreedom.org'
+__license__ = 'gpl v3 or greater'
+__email__ = 'scottc@movingtofreedom.org'
 __date__ = '$Mar 2, 2016 6:31 AM$'
-__license__ = 'GPL v3+'
 
 
-TARGET_LINE_LENGTH = 72
 TEMP_FILE = 'liner_temp_file'
 
 
@@ -36,7 +39,7 @@ def is_non_block(line):
     return False
 
 
-def handle(the_file, line_length=TARGET_LINE_LENGTH):
+def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
     paragraphs = []
     para = u''
     block_in_progress = False
@@ -148,31 +151,22 @@ def write_file(filepath, data):
 def main(argv=None):
 
     if argv is None:
-        argv = sys.argv  # pragma: no cover
+        argv = sys.argv[1:]  # pragma: no cover
 
-    line_length = TARGET_LINE_LENGTH
+    args = ArgHandler.get_args(argv)
 
-    if len(argv) > 1:
-        if argv[1] == '-f':
-            fileloc = argv[2]
-            # no line length option on files
-            lined = handle(get_file(fileloc))
-            write_file(
-                '{filepath}_lined'.format(filepath=fileloc),
-                lined
-            )
-            return 0
-        else:
-            try:
-                line_length = int(argv[1])
-            except ValueError:
-                line_length = TARGET_LINE_LENGTH
+    if args.file:
+        lined = handle(get_file(args.file))
+        write_file(
+            '{filepath}_lined'.format(filepath=args.file),
+            lined
+        )
+        return 0
 
     write_file(TEMP_FILE, get_clipboard_data())
-    lined = handle(get_file(TEMP_FILE), line_length)
+    lined = handle(get_file(TEMP_FILE), args.line_length)
     set_clipboard_data(lined)
     os.remove(TEMP_FILE)
-    return 0
 
 if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover
