@@ -2,6 +2,7 @@
 
 from __future__ import division
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import codecs
 import os
@@ -41,52 +42,52 @@ def is_non_block(line):
 
 def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
     paragraphs = []
-    para = u''
+    para = ''
     block_in_progress = False
     trailing_newline = False
 
     for line in the_file:
 
         # we'll want to know this for last line in file
-        trailing_newline = u'\n' in line
+        trailing_newline = '\n' in line
 
         line = line.rstrip()
-        if line == u'' or is_non_block(line):
+        if line == '' or is_non_block(line):
             if block_in_progress:
                 block_in_progress = False
                 paragraphs.append(para[:-1])
             paragraphs.append(line)
-            para = u''
+            para = ''
         else:
             block_in_progress = True
             if para == '':
                 # preserve leading spaces; first line indicates
                 # blockquote indent for whole para (*if* a blockquote)
-                para += line + u' '
+                para += line + ' '
             else:
-                para += line.strip() + u' '
+                para += line.strip() + ' '
 
-    if para != u'':
+    if para != '':
         paragraphs.append(para[:-1])
 
-    lined = u''
+    lined = ''
 
     # if less than one, return the joined lines
     if int(line_length) < 1:
         for para in paragraphs:
-            lined += u'{para}\n'.format(para=para)
+            lined += '{para}\n'.format(para=para)
         if trailing_newline:
-            lined += u'\n'
+            lined += '\n'
         return lined[:-1]
 
     for para in paragraphs:
 
-        if para == u'' or is_non_block(para):
+        if para == '' or is_non_block(para):
             lined += '{line}\n'.format(line=para)
             continue
 
-        indent = re.sub(r'[^ ].*$', u'', para)
-        if indent == u'':
+        indent = re.sub(r'[^ ].*$', '', para)
+        if indent == '':
             length = str(line_length)
         else:
             para = para.lstrip()
@@ -101,7 +102,7 @@ def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
             m_end = m.end()
             m_match = para[m_start:m_end]
 
-            lined += u'{indent}{line}\n'.format(
+            lined += '{indent}{line}\n'.format(
                 indent=indent,
                 line=m_match.rstrip()
             )
@@ -120,7 +121,7 @@ def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
 
     # put back trailing line if original file had it
     if trailing_newline:
-        lined += u'\n'
+        lined += '\n'
 
     return lined
 
