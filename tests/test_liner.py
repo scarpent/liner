@@ -19,6 +19,13 @@ def read_file(filename):
     return filedata
 
 
+def get_expected_and_actual(testfile):
+    liner.main(['liner.py', '-f', testfile])
+    expected = read_file(testfile + '_lined_expected')
+    actual = read_file(testfile + '_lined')
+    return expected, actual
+
+
 class Tests(unittest.TestCase):
 
     def setUp(self):
@@ -28,72 +35,54 @@ class Tests(unittest.TestCase):
         liner.set_clipboard_data(self.save_clipboard)
 
     def testMainFileInput(self):
-        liner.main(['liner.py', '-f', 'tests/test.txt'])
-        expected = read_file('tests/test.txt_lined_expected')
-        actual = read_file('tests/test.txt_lined')
+        testfile = 'tests/test.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testBullets(self):
-        liner.main(['liner.py', '-f', 'tests/test_bullets.txt'])
-        expected = read_file('tests/test_bullets.txt_lined_expected')
-        actual = read_file('tests/test_bullets.txt_lined')
+        testfile = 'tests/test_bullets.txt'
+        expected, actual = get_expected_and_actual(testfile)
+        self.assertEqual(expected, actual)
+
+    def testHeadings(self):
+        testfile = 'tests/test_headings.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testNoEofNewline(self):
-        liner.main(['liner.py', '-f', 'tests/test_eof_no_newline.txt'])
-        expected = read_file(
-            'tests/test_eof_no_newline.txt_lined_expected'
-        )
-        actual = read_file('tests/test_eof_no_newline.txt_lined')
+        testfile = 'tests/test_eof_no_newline.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testEofNewline(self):
-        liner.main(['liner.py', '-f', 'tests/test_eof_newline.txt'])
-        expected = read_file(
-            'tests/test_eof_newline.txt_lined_expected'
-        )
-        actual = read_file('tests/test_eof_newline.txt_lined')
+        testfile = 'tests/test_eof_newline.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testJournalDate(self):
-        liner.main(['liner.py', '-f', 'tests/test_journal_date.txt'])
-        expected = read_file(
-            'tests/test_journal_date.txt_lined_expected'
-        )
-        actual = read_file('tests/test_journal_date.txt_lined')
+        testfile = 'tests/test_journal_date.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testExcerpt(self):
-        liner.main(['liner.py', '-f', 'tests/test_excerpt.txt'])
-        expected = read_file(
-            'tests/test_excerpt.txt_lined_expected'
-        )
-        actual = read_file('tests/test_excerpt.txt_lined')
+        testfile = 'tests/test_excerpt.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testLineQuote(self):
-        liner.main(['liner.py', '-f', 'tests/test_line_quote.txt'])
-        expected = read_file(
-            'tests/test_line_quote.txt_lined_expected'
-        )
-        actual = read_file('tests/test_line_quote.txt_lined')
+        testfile = 'tests/test_line_quote.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testRstItems(self):
-        liner.main(['liner.py', '-f', 'tests/test_rst_items.txt'])
-        expected = read_file(
-            'tests/test_rst_items.txt_lined_expected'
-        )
-        actual = read_file('tests/test_rst_items.txt_lined')
+        testfile = 'tests/test_rst_items.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testUtfDash8(self):
         """ utf8 encoding only "kind of" worked; utf-8 needed here """
-        liner.main(['liner.py', '-f', 'tests/test_utf_dash_8.txt'])
-        expected = read_file(
-            'tests/test_utf_dash_8.txt_lined_expected'
-        )
-        actual = read_file('tests/test_utf_dash_8.txt_lined')
+        testfile = 'tests/test_utf_dash_8.txt'
+        expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testClipboard(self):
