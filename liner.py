@@ -47,7 +47,6 @@ def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
     para = ''
     eol = ''
     block_in_progress = False
-    trailing_newline = False
 
     for line in file_in:
 

@@ -80,6 +80,11 @@ class Tests(unittest.TestCase):
         expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
+    def testIndent(self):
+        testfile = 'test_indented.txt'
+        expected, actual = get_expected_and_actual(testfile)
+        self.assertEqual(expected, actual)
+
     def testRstItems(self):
         testfile = 'test_rst_items.txt'
         expected, actual = get_expected_and_actual(testfile)
