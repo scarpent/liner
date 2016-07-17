@@ -72,18 +72,15 @@ def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
 
     lined = ''
 
-    # if less than one, return the joined lines
-    if int(line_length) < 1:
-        for para in paragraphs:
-            lined += '{para}\n'.format(para=para)
-        if trailing_newline:
-            lined += '\n'
-        return lined[:-1]
-
     for para in paragraphs:
 
         if para == '' or is_non_block(para):
             lined += '{line}\n'.format(line=para)
+            continue
+
+        if int(line_length) < 1:
+            # if less than one, return the joined lines
+            lined += '{para}\n'.format(para=para)
             continue
 
         indent = re.sub(r'[^ ].*$', '', para)
