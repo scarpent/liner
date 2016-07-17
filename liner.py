@@ -21,6 +21,7 @@ __date__ = '$Mar 2, 2016 6:31 AM$'
 
 
 TEMP_FILE = 'liner_temp_file'
+TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
 
 
 def is_non_block(line):
@@ -40,13 +41,13 @@ def is_non_block(line):
     return False
 
 
-def handle(the_file, line_length=DEFAULT_LINE_LENGTH):
+def handle(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
     paragraphs = []
     para = ''
     block_in_progress = False
     trailing_newline = False
 
-    for line in the_file:
+    for line in file_in:
 
         # we'll want to know this for last line in file
         trailing_newline = '\n' in line
@@ -137,8 +138,17 @@ def set_clipboard_data(data):
     retcode = p.wait()
 
 
-def get_file(filepath):
+def get_file_in(filepath):
     return codecs.open(filepath, 'r', encoding='utf-8')
+
+
+def get_file_out(filepath):
+    return codecs.open(filepath, 'w', encoding='utf-8')
+
+
+def read_file(filepath):
+    with codecs.open(filepath, 'r', encoding='utf-8') as the_file:
+        return the_file.read()
 
 
 def write_file(filepath, data):
@@ -154,16 +164,24 @@ def main(argv=None):
     args = ArgHandler.get_args(argv)
 
     if args.file:
-        lined = handle(get_file(args.file), args.line_length)
-        write_file(
-            '{filepath}_lined'.format(filepath=args.file),
-            lined
+        file_out = '{filepath}_lined'.format(filepath=args.file)
+        write_file(file_out, '')  # make sure is empty
+        handle(
+            get_file_in(args.file),
+            get_file_out(file_out),
+            args.line_length
         )
     else:
         write_file(TEMP_FILE, get_clipboard_data())
-        lined = handle(get_file(TEMP_FILE), args.line_length)
-        set_clipboard_data(lined)
+        write_file(TEMP_FILE_LINED, '')
+        handle(
+            get_file_in(TEMP_FILE),
+            get_file_out(TEMP_FILE_LINED),
+            args.line_length
+        )
+        set_clipboard_data(read_file(TEMP_FILE_LINED))
         os.remove(TEMP_FILE)
+        os.remove(TEMP_FILE_LINED)
 
 if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover
