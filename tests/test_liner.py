@@ -9,8 +9,9 @@ import unittest
 import liner
 
 
-__author__ = "scarpent"
-__date__ = "$Jun 30, 2016 6:00 PM$"
+__author__ = 'Scott Carpenter'
+__license__ = 'gpl v3 or greater'
+__email__ = 'scottc@movingtofreedom.org'
 
 
 def get_expected_and_actual(testfile, line_length=None):
