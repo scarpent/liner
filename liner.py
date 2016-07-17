@@ -31,7 +31,7 @@ def is_non_block(line):
         r'^\s*[-*~] ',                          # bullets
         r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
         r'^(~<|>~)',                            # excerpts
-        r'^\s+\|',                              # line quote
+        r'^\s*\|',                              # line quote
         r'^(\s*:|\.\. )',                       # rst items
         r'^[-#=~]{3,}',                         # separator/heading
     ]
