@@ -20,7 +20,9 @@ __email__ = 'scottc@movingtofreedom.org'
 __date__ = '$Mar 2, 2016 6:31 AM$'
 
 
-TEMP_FILE = 'liner_temp_file'
+TEMP_FILE = '{home}/.liner_temp_file'.format(
+    home=os.path.expanduser('~')
+)
 TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
 
 
@@ -41,23 +43,34 @@ def is_non_block(line):
     return False
 
 
-def handle(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
-    paragraphs = []
+def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
     para = ''
+    eol = ''
     block_in_progress = False
     trailing_newline = False
 
     for line in file_in:
 
-        # we'll want to know this for last line in file
-        trailing_newline = '\n' in line
+        # last line may or may not have newline
+        eol = '\n' if '\n' in line else ''
 
         line = line.rstrip()
         if line == '' or is_non_block(line):
             if block_in_progress:
                 block_in_progress = False
-                paragraphs.append(para[:-1])
-            paragraphs.append(line)
+                # [:-1] to trim trailing space
+                write_paragraph(
+                    para[:-1],
+                    file_out,
+                    eol='\n',
+                    line_length=line_length
+                )
+            write_paragraph(
+                line,
+                file_out,
+                eol=eol,
+                line_length=line_length
+            )
             para = ''
         else:
             block_in_progress = True
@@ -69,59 +82,67 @@ def handle(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
                 para += line.strip() + ' '
 
     if para != '':
-        paragraphs.append(para[:-1])
+        write_paragraph(
+            para[:-1],
+            file_out,
+            eol=eol,
+            line_length=line_length
+        )
+
+    file_out.flush()
+    file_out.close()
+
+
+def write_paragraph(
+        para,
+        file_out,
+        eol='\n',
+        line_length=DEFAULT_LINE_LENGTH
+):
+
+    if para == '' or is_non_block(para):
+        file_out.write(para + eol)
+        return
+
+    if int(line_length) < 1:
+        # if less than one, use the joined lines
+        file_out.write(para + eol)
+        return
+
+    indent = re.sub(r'[^ ].*$', '', para)
+    if indent == '':
+        length = str(line_length)
+    else:
+        para = para.lstrip()
+        length = str(line_length - len(indent))
+
+    pattern = r'(.{0,' + length + r'}(?![^\s])|[^\s]+)\s*'
+    r = re.compile(pattern)
+    m = r.search(para)
 
     lined = ''
+    while m:
+        m_start = m.start()
+        m_end = m.end()
+        m_match = para[m_start:m_end]
 
-    for para in paragraphs:
+        lined += '{indent}{line}\n'.format(
+            indent=indent,
+            line=m_match.rstrip()
+        )
 
-        if para == '' or is_non_block(para):
-            lined += '{line}\n'.format(line=para)
-            continue
+        if m_end == len(para):
+            # infinite loop if m_start == m_end == len(para)
+            break
+        elif m_start == m_end:
+            # zero-width match; keep things moving along
+            # (this may be impossible with our regex)
+            m_end += 1  # pragma: no cover
 
-        if int(line_length) < 1:
-            # if less than one, return the joined lines
-            lined += '{para}\n'.format(para=para)
-            continue
+        m = r.search(para, m_end)
 
-        indent = re.sub(r'[^ ].*$', '', para)
-        if indent == '':
-            length = str(line_length)
-        else:
-            para = para.lstrip()
-            length = str(line_length - len(indent))
-
-        pattern = r'(.{0,' + length + r'}(?![^\s])|[^\s]+)\s*'
-        r = re.compile(pattern)
-        m = r.search(para)
-
-        while m:
-            m_start = m.start()
-            m_end = m.end()
-            m_match = para[m_start:m_end]
-
-            lined += '{indent}{line}\n'.format(
-                indent=indent,
-                line=m_match.rstrip()
-            )
-
-            if m_end == len(para):
-                # infinite loop if m_start == m_end == len(para)
-                break
-            elif m_start == m_end:
-                # zero-width match; keep things moving along
-                # (this may be impossible with our regex)
-                m_end += 1  # pragma: no cover
-
-            m = r.search(para, m_end)
-
-    lined = lined[:-1]  # remove trailing newline
-
-    # put back trailing line if original file had it
-    if trailing_newline:
-        lined += '\n'
-
-    return lined
+    # remove assumed trailing newline from loop and add back eol
+    file_out.write(lined[:-1] + eol)
 
 
 def get_clipboard_data():
@@ -166,7 +187,7 @@ def main(argv=None):
     if args.file:
         file_out = '{filepath}_lined'.format(filepath=args.file)
         write_file(file_out, '')  # make sure is empty
-        handle(
+        line_the_file(
             get_file_in(args.file),
             get_file_out(file_out),
             args.line_length
@@ -174,7 +195,7 @@ def main(argv=None):
     else:
         write_file(TEMP_FILE, get_clipboard_data())
         write_file(TEMP_FILE_LINED, '')
-        handle(
+        line_the_file(
             get_file_in(TEMP_FILE),
             get_file_out(TEMP_FILE_LINED),
             args.line_length
