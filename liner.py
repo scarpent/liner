@@ -44,6 +44,7 @@ def is_non_block(line):
 
 
 def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
+
     para = ''
     eol = ''
     block_in_progress = False
@@ -94,10 +95,10 @@ def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
 
 
 def write_paragraph(
-        para,
-        file_out,
-        eol='\n',
-        line_length=DEFAULT_LINE_LENGTH
+    para,
+    file_out,
+    eol='\n',
+    line_length=DEFAULT_LINE_LENGTH
 ):
 
     if para == '' or is_non_block(para):
@@ -105,7 +106,7 @@ def write_paragraph(
         return
 
     if int(line_length) < 1:
-        # if less than one, use the joined lines
+        # if less than one, use the joined line
         file_out.write(para + eol)
         return
 
