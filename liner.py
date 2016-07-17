@@ -188,6 +188,7 @@ def main(argv=None):
     if args.file:
         file_out = '{filepath}_lined'.format(filepath=args.file)
         write_file(file_out, '')  # make sure is empty
+        
         line_the_file(
             get_file_in(args.file),
             get_file_out(file_out),
@@ -196,11 +197,13 @@ def main(argv=None):
     else:
         write_file(TEMP_FILE, get_clipboard_data())
         write_file(TEMP_FILE_LINED, '')
+
         line_the_file(
             get_file_in(TEMP_FILE),
             get_file_out(TEMP_FILE_LINED),
             args.line_length
         )
+
         set_clipboard_data(read_file(TEMP_FILE_LINED))
         os.remove(TEMP_FILE)
         os.remove(TEMP_FILE_LINED)
