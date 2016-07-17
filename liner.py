@@ -88,6 +88,7 @@ def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
             line_length=line_length
         )
 
+    file_in.close()
     file_out.flush()
     file_out.close()
 
