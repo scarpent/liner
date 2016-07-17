@@ -4,7 +4,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import codecs
 import unittest
 
 import liner
@@ -14,21 +13,14 @@ __author__ = "scarpent"
 __date__ = "$Jun 30, 2016 6:00 PM$"
 
 
-def read_file(filename):
-    f = codecs.open(filename, 'r', encoding='utf-8')
-    filedata = f.read()
-    f.close()
-    return filedata
-
-
 def get_expected_and_actual(testfile, line_length=None):
     testfile = 'tests/files/' + testfile
     if line_length:
         liner.main(['-f', testfile, '-l', line_length])
     else:
         liner.main(['-f', testfile])
-    expected = read_file(testfile + '_lined_expected')
-    actual = read_file(testfile + '_lined')
+    expected = liner.read_file(testfile + '_lined_expected')
+    actual = liner.read_file(testfile + '_lined')
     return expected, actual
 
 
