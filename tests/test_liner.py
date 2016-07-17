@@ -145,6 +145,15 @@ class Tests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
+    def testTrailingWhitespace(self):
+        """ trailing whitespace is stripped """
+        expected = '\n\nabc\n\n'
+        text = ' \n\t\t\nabc \n    \n'
+        liner.set_clipboard_data(text)
+        liner.main(['-l', '50'])
+        actual = liner.get_clipboard_data()
+        self.assertEqual(expected, actual)
+
 
 if __name__ == "__main__":
     unittest.main()         # pragma: no cover
