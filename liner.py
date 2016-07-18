@@ -28,12 +28,12 @@ TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
 
 def is_non_block(line):
     patterns = [
-        r'^\s*[-*~] ',                          # bullets
-        r'^[A-Za-z]+, \d+ [A-Za-z]+ \d+$',      # date
-        r'^(~<|>~)',                            # excerpts
-        r'^\s*\|',                              # line quote
-        r'^(\s*:|\.\. )',                       # rst items
-        r'^[-#=~]{3,}',                         # separator/heading
+        r'^\s*[-*~] ',                           # bullets
+        r'^[A-Za-z]+, \d{1,2} [A-Za-z]+ \d{4}$', # date
+        r'^(~<|>~)',                             # excerpts
+        r'^\s*\|',                               # line quote
+        r'^(\s*:|\.\. )',                        # rst items
+        r'^[-#=~]{3,}',                          # separator/heading
     ]
 
     for pattern in patterns:
@@ -188,7 +188,7 @@ def main(argv=None):
     if args.file:
         file_out = '{filepath}_lined'.format(filepath=args.file)
         write_file(file_out, '')  # make sure is empty
-        
+
         line_the_file(
             get_file_in(args.file),
             get_file_out(file_out),
