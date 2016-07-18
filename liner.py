@@ -24,6 +24,7 @@ TEMP_FILE = '{home}/.liner_temp_file'.format(
     home=os.path.expanduser('~')
 )
 TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
+LINED_SUFFIX = '_lined'
 
 
 def is_non_block(line):
@@ -186,7 +187,10 @@ def main(argv=None):
     args = ArgHandler.get_args(argv)
 
     if args.file:
-        file_out = '{filepath}_lined'.format(filepath=args.file)
+        file_out = '{filepath}{suffix}'.format(
+            filepath=args.file,
+            suffix=LINED_SUFFIX
+        )
         write_file(file_out, '')  # make sure is empty
 
         line_the_file(

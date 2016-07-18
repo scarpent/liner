@@ -21,7 +21,7 @@ def get_expected_and_actual(testfile, line_length=None):
     else:
         liner.main(['-f', testfile])
     expected = liner.read_file(testfile + '_lined_expected')
-    actual = liner.read_file(testfile + '_lined')
+    actual = liner.read_file(testfile + liner.LINED_SUFFIX)
     return expected, actual
 
 
