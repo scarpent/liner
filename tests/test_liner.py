@@ -25,13 +25,7 @@ def get_expected_and_actual(testfile, line_length=None):
     return expected, actual
 
 
-class Tests(unittest.TestCase):
-
-    def setUp(self):
-        self.save_clipboard = liner.get_clipboard_data()
-
-    def tearDown(self):
-        liner.set_clipboard_data(self.save_clipboard)
+class FileTests(unittest.TestCase):
 
     def testMainFileInput(self):
         testfile = 'test.txt'
@@ -93,6 +87,15 @@ class Tests(unittest.TestCase):
         testfile = 'test_utf_dash_8.txt'
         expected, actual = get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
+
+
+class ClipboardTests(unittest.TestCase):
+
+    def setUp(self):
+        self.save_clipboard = liner.get_clipboard_data()
+
+    def tearDown(self):
+        liner.set_clipboard_data(self.save_clipboard)
 
     def testClipboard(self):
         expected = "Blah blah blah blah"
