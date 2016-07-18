@@ -14,78 +14,77 @@ __license__ = 'gpl v3 or greater'
 __email__ = 'scottc@movingtofreedom.org'
 
 
-def get_expected_and_actual(testfile, line_length=None):
-    testfile = 'tests/files/' + testfile
-    if line_length:
-        liner.main(['-f', testfile, '-l', line_length])
-    else:
-        liner.main(['-f', testfile])
-    expected = liner.read_file(testfile + '_lined_expected')
-    actual = liner.read_file(testfile + liner.LINED_SUFFIX)
-    return expected, actual
-
-
 class FileTests(unittest.TestCase):
+
+    def get_expected_and_actual(self, testfile, line_length=None):
+        testfile = 'tests/files/' + testfile
+        if line_length:
+            liner.main(['-f', testfile, '-l', line_length])
+        else:
+            liner.main(['-f', testfile])
+        expected = liner.read_file(testfile + '_lined_expected')
+        actual = liner.read_file(testfile + liner.LINED_SUFFIX)
+        return expected, actual
 
     def testMainFileInput(self):
         testfile = 'test.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testBullets(self):
         testfile = 'test_bullets.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testHeadings(self):
         testfile = 'test_headings.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testNoEofNewline(self):
         testfile = 'test_eof_no_newline.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testEofNewline(self):
         testfile = 'test_eof_newline.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testJournalDate(self):
         testfile = 'test_journal_date.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testExcerpt(self):
         testfile = 'test_excerpt.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testLineQuote(self):
         testfile = 'test_line_quote.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testIndent(self):
         testfile = 'test_indented.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testRstItems(self):
         testfile = 'test_rst_items.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
     def testFileLineLength30(self):
         testfile = 'test_file_line_length_30.txt'
-        expected, actual = get_expected_and_actual(testfile, '30')
+        expected, actual = self.get_expected_and_actual(testfile, '30')
         self.assertEqual(expected, actual)
 
     def testUtfDash8(self):
         """ utf8 encoding only "kind of" worked; utf-8 needed here """
         testfile = 'test_utf_dash_8.txt'
-        expected, actual = get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
 
