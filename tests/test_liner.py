@@ -4,6 +4,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sys
 import unittest
 
 import liner
@@ -17,13 +18,17 @@ __email__ = 'scottc@movingtofreedom.org'
 class FileTests(unittest.TestCase):
 
     def get_expected_and_actual(self, testfile, line_length=None):
+
         testfile = 'tests/files/' + testfile
+
         if line_length:
             liner.main(['-f', testfile, '-l', line_length])
         else:
             liner.main(['-f', testfile])
+
         expected = liner.read_file(testfile + '_lined_expected')
         actual = liner.read_file(testfile + liner.LINED_SUFFIX)
+
         return expected, actual
 
     def testMainFileInput(self):
@@ -149,6 +154,53 @@ class ClipboardTests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
+
+class PipeTests(unittest.TestCase):
+
+    def get_expected_and_actual_pipe(self, testfile, line_length=None):
+
+        stdin = sys.stdin
+        stdout = sys.stdout
+
+        testfile = 'tests/files/' + testfile
+        sys.stdin = open(testfile,'r')
+        sys.stdout = open(testfile + liner.LINED_SUFFIX, 'w')
+
+        if line_length:
+            liner.main(['-l', line_length])
+        else:
+            liner.main([])
+
+        sys.stdin = stdin
+        sys.stdout = stdout
+
+        expected = liner.read_file(testfile + '_lined_expected')
+        actual = liner.read_file(testfile + liner.LINED_SUFFIX)
+
+        return expected, actual
+
+    def testMainFileInputPipe(self):
+        testfile = 'test.txt'
+        expected, actual = self.get_expected_and_actual_pipe(testfile)
+        self.assertEqual(expected, actual)
+
+    def testBulletsPipe(self):
+        testfile = 'test_bullets.txt'
+        expected, actual = self.get_expected_and_actual_pipe(testfile)
+        self.assertEqual(expected, actual)
+
+    def testUtfDash8Pipe(self):
+        testfile = 'test_utf_dash_8.txt'
+        expected, actual = self.get_expected_and_actual_pipe(testfile)
+        self.assertEqual(expected, actual)
+
+    def testFileLineLength30Pipe(self):
+        testfile = 'test_file_line_length_30.txt'
+        expected, actual = self.get_expected_and_actual_pipe(
+            testfile,
+            '30'
+        )
+        self.assertEqual(expected, actual)
 
 if __name__ == "__main__":
     unittest.main()         # pragma: no cover
