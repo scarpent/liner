@@ -157,10 +157,15 @@ class ClipboardTests(unittest.TestCase):
 
 class PipeTests(unittest.TestCase):
 
-    def get_expected_and_actual_pipe(self, testfile, line_length=None):
+    def setUp(self):
+        self.stdin = sys.stdin
+        self.stdout = sys.stdout
 
-        stdin = sys.stdin
-        stdout = sys.stdout
+    def tearDown(self):
+        sys.stdin = self.stdin
+        sys.stdout = self.stdout
+
+    def get_expected_and_actual_pipe(self, testfile, line_length=None):
 
         testfile = 'tests/files/' + testfile
         sys.stdin = open(testfile,'r')
@@ -170,9 +175,6 @@ class PipeTests(unittest.TestCase):
             liner.main(['-l', line_length])
         else:
             liner.main([])
-
-        sys.stdin = stdin
-        sys.stdout = stdout
 
         expected = liner.read_file(testfile + '_lined_expected')
         actual = liner.read_file(testfile + liner.LINED_SUFFIX)
