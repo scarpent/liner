@@ -15,11 +15,14 @@ __license__ = 'gpl v3 or greater'
 __email__ = 'scottc@movingtofreedom.org'
 
 
+TEST_FILES_DIR = 'tests/files/'
+
+
 class FileTests(unittest.TestCase):
 
     def get_expected_and_actual(self, testfile, line_length=None):
 
-        testfile = 'tests/files/' + testfile
+        testfile = TEST_FILES_DIR + testfile
 
         if line_length:
             liner.main(['-f', testfile, '-l', line_length])
@@ -167,7 +170,7 @@ class PipeTests(unittest.TestCase):
 
     def get_expected_and_actual_pipe(self, testfile, line_length=None):
 
-        testfile = 'tests/files/' + testfile
+        testfile = TEST_FILES_DIR + testfile
         sys.stdin = open(testfile,'r')
         sys.stdout = open(testfile + liner.LINED_SUFFIX, 'w')
 
