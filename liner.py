@@ -198,7 +198,8 @@ def main(argv=None):
             get_file_out(file_out),
             args.line_length
         )
-    else:
+    elif args.clipboard:
+        # clipboard uses files for consistent handling...
         write_file(TEMP_FILE, get_clipboard_data())
         write_file(TEMP_FILE_LINED, '')
 
@@ -211,6 +212,13 @@ def main(argv=None):
         set_clipboard_data(read_file(TEMP_FILE_LINED))
         os.remove(TEMP_FILE)
         os.remove(TEMP_FILE_LINED)
+    else:
+        sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+        line_the_file(
+            codecs.getreader('utf-8')(sys.stdin),
+            sys.stdout,
+            args.line_length
+        )
 
 if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover

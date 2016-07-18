@@ -105,14 +105,14 @@ class ClipboardTests(unittest.TestCase):
     def testLineLengthLessThanOne(self):
         expected = 'Lorem ipsum dolor sit amet'
         liner.set_clipboard_data(expected)
-        liner.main(['-l', 0])
+        liner.main(['-c', '-l', 0])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
     def testLineLengthLessThanOneAndNewline(self):
         expected = 'Lorem ipsum dolor sit amet\n'
         liner.set_clipboard_data(expected)
-        liner.main(['-l', '-1'])
+        liner.main(['-c', '-l', '-1'])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
@@ -129,13 +129,13 @@ class ClipboardTests(unittest.TestCase):
             'urna mollis ornare\nvel eu leo.'
         )
         liner.set_clipboard_data(text)
-        liner.main(['-l', 0])
+        liner.main(['-c', '-l', 0])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
     def testLineLengthAsString(self):
         liner.set_clipboard_data('Lorem ipsum dolor sit amet')
-        liner.main(['-l', '017'])
+        liner.main(['-c', '-l', '017'])
         expected = 'Lorem ipsum dolor\nsit amet'
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
@@ -145,7 +145,7 @@ class ClipboardTests(unittest.TestCase):
         expected = '\n\nabc\n\n'
         text = ' \n\t\t\nabc \n    \n'
         liner.set_clipboard_data(text)
-        liner.main(['-l', '50'])
+        liner.main(['-c', '-l', '50'])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 

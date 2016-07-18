@@ -28,6 +28,12 @@ class ArgHandler(object):
         )
 
         parser.add_argument(
+            '-c', '--clipboard',
+            action='store_true',
+            help='read/write text from clipboard',
+        )
+
+        parser.add_argument(
             '-f', '--file',
             type=str,
             help='file to be lined',
