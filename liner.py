@@ -25,6 +25,7 @@ TEMP_FILE = '{home}/.liner_temp_file'.format(
 )
 TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
 LINED_SUFFIX = '_lined'
+UTF_8 = 'utf-8'
 
 
 def is_non_block(line):
@@ -151,31 +152,31 @@ def get_clipboard_data():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
     retcode = p.wait()
     data = p.stdout.read()
-    return data.decode('utf-8')
+    return data.decode(UTF_8)
 
 
 def set_clipboard_data(data):
     p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
-    p.stdin.write(data.encode('utf-8'))
+    p.stdin.write(data.encode(UTF_8))
     p.stdin.close()
     retcode = p.wait()
 
 
 def get_file_in(filepath):
-    return codecs.open(filepath, 'r', encoding='utf-8')
+    return codecs.open(filepath, 'r', encoding=UTF_8)
 
 
 def get_file_out(filepath):
-    return codecs.open(filepath, 'w', encoding='utf-8')
+    return codecs.open(filepath, 'w', encoding=UTF_8)
 
 
 def read_file(filepath):
-    with codecs.open(filepath, 'r', encoding='utf-8') as the_file:
+    with codecs.open(filepath, 'r', encoding=UTF_8) as the_file:
         return the_file.read()
 
 
 def write_file(filepath, data):
-    with codecs.open(filepath, 'w', encoding='utf-8') as the_file:
+    with codecs.open(filepath, 'w', encoding=UTF_8) as the_file:
         the_file.write(data)
 
 
