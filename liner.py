@@ -124,7 +124,7 @@ def write_paragraph(
     m = r.search(para)
 
     lined = ''
-    while m:
+    while m:  # will always be at least one m w/ logic above
         m_start = m.start()
         m_end = m.end()
         m_match = para[m_start:m_end]
