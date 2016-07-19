@@ -153,7 +153,15 @@ class ClipboardTests(unittest.TestCase):
         expected = '\n\nabc\n\n'
         text = ' \n\t\t\nabc \n    \n'
         liner.set_clipboard_data(text)
-        liner.main(['-c', '-l', '50'])
+        liner.main(['-c'])
+        actual = liner.get_clipboard_data()
+        self.assertEqual(expected, actual)
+
+    def testUtfEight(self):
+        expected = '\u2122 \u2122 \u2122\n\u2122 \u2122 \u2122\n\u2122'
+        text = '\u2122 \u2122 \u2122 \u2122 \u2122 \u2122 \u2122'
+        liner.set_clipboard_data(text)
+        liner.main(['-c', '-l', '5'])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
