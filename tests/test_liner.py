@@ -41,7 +41,7 @@ class FileTests(unittest.TestCase):
 
     def testBullets(self):
         testfile = 'test_bullets.txt'
-        expected, actual = self.get_expected_and_actual(testfile)
+        expected, actual = self.get_expected_and_actual(testfile, '40')
         self.assertEqual(expected, actual)
 
     def testHeadings(self):
@@ -199,7 +199,10 @@ class PipeTests(unittest.TestCase):
 
     def testBulletsPipe(self):
         testfile = 'test_bullets.txt'
-        expected, actual = self.get_expected_and_actual_pipe(testfile)
+        expected, actual = self.get_expected_and_actual_pipe(
+            testfile,
+            '40'
+        )
         self.assertEqual(expected, actual)
 
     def testUtfDash8Pipe(self):
