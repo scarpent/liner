@@ -30,7 +30,6 @@ UTF_8 = 'utf-8'
 
 def is_non_block(line):
     patterns = [
-        r'^\s*[-*~] ',                           # bullets
         r'^[A-Za-z]+, \d{1,2} [A-Za-z]+ \d{4}$', # date
         r'^(~<|>~)',                             # excerpts
         r'^\s*\|( |$)',                          # line quote
@@ -42,7 +41,16 @@ def is_non_block(line):
         if re.search(pattern, line):
             return True
 
+    if is_bullet(line):
+        return True
+
     return False
+
+def is_bullet(line):
+    if re.search(r'^\s*[-*~] ', line):
+        return True
+    else:
+        return False
 
 
 def line_the_file(file_in, file_out, line_length=DEFAULT_LINE_LENGTH):
