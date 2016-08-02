@@ -16,6 +16,7 @@ __email__ = 'scottc@movingtofreedom.org'
 
 
 TEST_FILES_DIR = 'tests/files/'
+EXPECTED_SUFFIX = '{lined}_expected'.format(lined=liner.LINED_SUFFIX)
 
 
 class FileTests(unittest.TestCase):
@@ -29,7 +30,7 @@ class FileTests(unittest.TestCase):
         else:
             liner.main(['-f', testfile])
 
-        expected = liner.read_file(testfile + '_lined_expected')
+        expected = liner.read_file(testfile + EXPECTED_SUFFIX)
         actual = liner.read_file(testfile + liner.LINED_SUFFIX)
 
         return expected, actual
