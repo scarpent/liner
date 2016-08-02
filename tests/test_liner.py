@@ -21,7 +21,8 @@ EXPECTED_SUFFIX = '{lined}_expected'.format(lined=liner.LINED_SUFFIX)
 
 class FileTests(unittest.TestCase):
 
-    def get_expected_and_actual(self, testfile, line_length=None):
+    @staticmethod
+    def get_expected_and_actual(testfile, line_length=None):
 
         testfile = TEST_FILES_DIR + testfile
 
@@ -177,10 +178,11 @@ class PipeTests(unittest.TestCase):
         sys.stdin = self.stdin
         sys.stdout = self.stdout
 
-    def get_expected_and_actual_pipe(self, testfile, line_length=None):
+    @staticmethod
+    def get_expected_and_actual_pipe(testfile, line_length=None):
 
         testfile = TEST_FILES_DIR + testfile
-        sys.stdin = open(testfile,'r')
+        sys.stdin = open(testfile, 'r')
         sys.stdout = open(testfile + liner.LINED_SUFFIX, 'w')
 
         if line_length:
@@ -221,4 +223,3 @@ class PipeTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()         # pragma: no cover
-

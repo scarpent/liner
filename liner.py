@@ -126,6 +126,7 @@ def write_paragraph(para, file_out, eol='\n'):
         new_length = str(int(length) - 2)
     else:
         new_indent = None
+        new_length = None
 
     pattern = r'(.{0,' + length + r'}(?![^\s])|[^\s]+)\s*'
     r = re.compile(pattern)
