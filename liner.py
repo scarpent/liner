@@ -23,8 +23,11 @@ __date__ = '$Mar 2, 2016 6:31 AM$'
 TEMP_FILE = '{home}/.liner_temp_file'.format(
     home=os.path.expanduser('~')
 )
-TEMP_FILE_LINED = '{temp}_lined'.format(temp=TEMP_FILE)
 LINED_SUFFIX = '_lined'
+TEMP_FILE_LINED = '{temp}_{suffix}'.format(
+    temp=TEMP_FILE,
+    suffix=LINED_SUFFIX
+)
 UTF_8 = 'utf-8'
 BULLET_REGEX = r'^\s*[-*~] '
 
