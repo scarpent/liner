@@ -229,9 +229,9 @@ def main(argv=None):
         os.remove(TEMP_FILE)
         os.remove(TEMP_FILE_LINED)
     else:
-        sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+        sys.stdout = codecs.getwriter(UTF_8)(sys.stdout)
         process_file(
-            codecs.getreader('utf-8')(sys.stdin),
+            codecs.getreader(UTF_8)(sys.stdin),
             sys.stdout
         )
 
