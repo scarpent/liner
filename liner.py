@@ -81,6 +81,7 @@ def process_file(file_in, file_out):
                 continue
 
         block_in_progress = True
+        # join lines in a block together before lining/re-lining
         if para == '':
             # preserve leading spaces; first line indicates
             # blockquote indent for whole para (*if* a blockquote)
