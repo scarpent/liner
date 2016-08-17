@@ -196,12 +196,12 @@ class PipeTests(unittest.TestCase):
         return expected, actual
 
     def testMainFileInputPipe(self):
-        testfile = 'test.txt'
+        testfile = 'test_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
     def testBulletsPipe(self):
-        testfile = 'test_bullets.txt'
+        testfile = 'test_bullets_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
             testfile,
             '40'
@@ -209,12 +209,12 @@ class PipeTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def testUtfDash8Pipe(self):
-        testfile = 'test_utf_dash_8.txt'
+        testfile = 'test_utf_dash_8_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
     def testFileLineLength30Pipe(self):
-        testfile = 'test_file_line_length_30.txt'
+        testfile = 'test_file_line_length_30_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
             testfile,
             '30'
