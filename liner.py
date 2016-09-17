@@ -30,7 +30,7 @@ TEMP_FILE_LINED = '{temp}_{suffix}'.format(
     suffix=LINED_SUFFIX
 )
 UTF_8 = 'utf-8'
-BULLET_REGEX = r'^\s*([-*~]|\d+\.) '
+BULLET_REGEX = r'^\s*([-*~]|[#\d]+\.) '
 
 line_length = DEFAULT_LINE_LENGTH
 
@@ -39,7 +39,7 @@ def is_non_block(line):
     patterns = [
         r'^[A-Za-z]+, \d{1,2} [A-Za-z]+ \d{4}$',  # date
         r'^(~<|>~)',                              # excerpts
-        r'^\s*\|( |$)',                           # line quote
+        r'^\s*[|#]( |$)',                         # line quote
         r'^(\s*:|\.\. )',                         # rst items
         r'^[-#=~]{3,}',                           # separator/heading
     ]
@@ -51,8 +51,11 @@ def is_non_block(line):
     return False
 
 
-def is_bullet(line):
-    if re.search(BULLET_REGEX, line):
+def is_bullet(line, para):
+    if (
+        para == '' or
+        re.search(BULLET_REGEX, para)
+    ) and re.search(BULLET_REGEX, line):
         return True
     else:
         return False
@@ -70,14 +73,14 @@ def process_file(file_in, file_out):
         eol = '\n' if '\n' in line else ''
 
         line = line.rstrip()
-        if line == '' or is_non_block(line) or is_bullet(line):
+        if line == '' or is_non_block(line) or is_bullet(line, para):
             if block_in_progress:
                 block_in_progress = False
                 # [:-1] to trim trailing space
                 write_paragraph(para[:-1], file_out, eol='\n')
                 para = ''
 
-            if not is_bullet(line):
+            if not is_bullet(line, para):
                 write_paragraph(line, file_out, eol=eol)
                 continue
 
@@ -118,7 +121,7 @@ def write_paragraph(para, file_out, eol='\n'):
         para = para.lstrip()
         length = str(line_length - len(indent))
 
-    if is_bullet(para):
+    if is_bullet(para, ''):
         bullet_indent = re.sub(
             r'(' + BULLET_REGEX + r').*$',
             r'\1',

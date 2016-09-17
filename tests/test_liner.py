@@ -47,6 +47,11 @@ class FileTests(unittest.TestCase):
         expected, actual = self.get_expected_and_actual(testfile, '40')
         self.assertEqual(expected, actual)
 
+    def testBulletsNot(self):
+        testfile = 'test_bullets_not.txt'
+        expected, actual = self.get_expected_and_actual(testfile)
+        self.assertEqual(expected, actual)
+
     def testHeadings(self):
         testfile = 'test_headings.txt'
         expected, actual = self.get_expected_and_actual(testfile)
