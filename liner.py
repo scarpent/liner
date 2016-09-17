@@ -30,7 +30,7 @@ TEMP_FILE_LINED = '{temp}_{suffix}'.format(
     suffix=LINED_SUFFIX
 )
 UTF_8 = 'utf-8'
-BULLET_REGEX = r'^\s*[-*~] '
+BULLET_REGEX = r'^\s*([-*~]|\d+\.) '
 
 line_length = DEFAULT_LINE_LENGTH
 
