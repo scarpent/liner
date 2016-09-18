@@ -54,6 +54,7 @@ def is_non_block(line):
 def is_bullet(line, para):
     if (
         para == '' or
+        re.search('^(\t|\s{2,})', line) or
         re.search(BULLET_REGEX, para)
     ) and re.search(BULLET_REGEX, line):
         return True
