@@ -1,9 +1,7 @@
 #!/usr/bin/python
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 import codecs
 import os
@@ -11,9 +9,7 @@ import re
 import subprocess
 import sys
 
-from arghandler import ArgHandler
-from arghandler import DEFAULT_LINE_LENGTH
-
+from arghandler import DEFAULT_LINE_LENGTH, ArgHandler
 
 __author__ = 'Scott Carpenter'
 __license__ = 'gpl v3 or greater'
@@ -171,7 +167,7 @@ def write_paragraph(para, file_out, eol='\n'):
 
 def get_clipboard_data():
     p = subprocess.Popen(['pbpaste'], stdout=subprocess.PIPE)
-    retcode = p.wait()
+    p.wait()
     data = p.stdout.read()
     return data.decode(UTF_8)
 
@@ -180,7 +176,7 @@ def set_clipboard_data(data):
     p = subprocess.Popen(['pbcopy'], stdin=subprocess.PIPE)
     p.stdin.write(data.encode(UTF_8))
     p.stdin.close()
-    retcode = p.wait()
+    p.wait()
 
 
 def get_file_in(filepath):
