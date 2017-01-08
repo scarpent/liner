@@ -8,6 +8,8 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
+from contextlib import contextmanager
 
 from arghandler import DEFAULT_LINE_LENGTH, ArgHandler
 
@@ -16,19 +18,19 @@ __license__ = 'gpl v3 or greater'
 __email__ = 'scottc@movingtofreedom.org'
 __date__ = '$Mar 2, 2016 6:31 AM$'
 
-
-TEMP_FILE = '{home}/.liner_temp_file'.format(
-    home=os.path.expanduser('~')
-)
 LINED_SUFFIX = '_lined'
-TEMP_FILE_LINED = '{temp}_{suffix}'.format(
-    temp=TEMP_FILE,
-    suffix=LINED_SUFFIX
-)
 UTF_8 = 'utf-8'
 BULLET_REGEX = r'^\s*([-*~]|[#\d]+\.) '
 
 line_length = DEFAULT_LINE_LENGTH
+
+
+@contextmanager
+def temp_file(data):
+    with tempfile.NamedTemporaryFile(delete=False) as temp:
+        temp.write(data.encode(UTF_8))
+    yield temp.name
+    os.unlink(temp.name)
 
 
 def is_non_block(line):
@@ -220,23 +222,23 @@ def main(argv=None):
         )
     elif args.clipboard:
         # clipboard uses files for consistent handling...
-        write_file(TEMP_FILE, get_clipboard_data())
-        write_file(TEMP_FILE_LINED, '')
+        with temp_file(get_clipboard_data()) as tfile:
+            temp_file_lined = tfile + LINED_SUFFIX
 
-        process_file(
-            get_file_in(TEMP_FILE),
-            get_file_out(TEMP_FILE_LINED)
-        )
+            process_file(
+                get_file_in(tfile),
+                get_file_out(temp_file_lined)
+            )
 
-        set_clipboard_data(read_file(TEMP_FILE_LINED))
-        os.remove(TEMP_FILE)
-        os.remove(TEMP_FILE_LINED)
+        set_clipboard_data(read_file(temp_file_lined))
+        os.remove(temp_file_lined)
     else:
         sys.stdout = codecs.getwriter(UTF_8)(sys.stdout)
         process_file(
             codecs.getreader(UTF_8)(sys.stdin),
             sys.stdout
         )
+
 
 if __name__ == '__main__':
     sys.exit(main())  # pragma: no cover
