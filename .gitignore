@@ -1,7 +1,8 @@
-liner_temp_file
 *_lined
+*iml
 *pyc
 .coverage
-*iml
 .idea
+.python-version
 htmlcov
+liner_temp_file
