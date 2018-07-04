@@ -1,8 +1,10 @@
+*.sublime-*
 *_lined
 *iml
 *pyc
 .coverage
 .idea
+.pytest_cache
 .python-version
 htmlcov
 liner_temp_file

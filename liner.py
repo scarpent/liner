@@ -24,6 +24,10 @@ BULLET_REGEX = r'^\s*([-*~]|[#\d]+\.) '
 
 line_length = DEFAULT_LINE_LENGTH
 
+# todo: markdown handling
+# ``` code blocks
+# > blockquotes
+
 
 @contextmanager
 def temp_file(data):
