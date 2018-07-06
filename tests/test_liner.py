@@ -6,8 +6,6 @@ import os
 import sys
 import unittest
 
-import pytest
-
 sys.path.insert(0, os.path.realpath(os.path.dirname(__file__) + "/.."))
 
 from liner import liner  # isort:skip # noqa: belongs after the sys path hack
