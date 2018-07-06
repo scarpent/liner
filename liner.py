@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+from __future__ import (
+    absolute_import, division, print_function, unicode_literals
+)
+
 import codecs
 import os
 import re
@@ -8,7 +12,6 @@ import tempfile
 from contextlib import contextmanager
 
 from arghandler import DEFAULT_LINE_LENGTH, get_args
-
 
 LINED_SUFFIX = '_lined'
 UTF_8 = 'utf-8'

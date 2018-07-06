@@ -1,14 +1,17 @@
-import io
+from __future__ import (
+    absolute_import, division, print_function, unicode_literals
+)
+
 import os
 import sys
 import unittest
-from unittest import mock
 
 import pytest
 
 sys.path.insert(0, os.path.realpath(os.path.dirname(__file__) + "/.."))
 
-from liner import liner  # noqa: has to come after the sys path hack
+from liner import liner  # isort:skip # noqa: belongs after the sys path hack
+
 
 TEST_FILES_DIR = 'tests/files/'
 EXPECTED_SUFFIX = '{lined}_expected'.format(lined=liner.LINED_SUFFIX)
@@ -200,13 +203,11 @@ class PipeTests(unittest.TestCase):
 
         return expected, actual
 
-    @pytest.mark.skip(reason='stopped working with python 3')
     def test_main_file_input_pipe(self):
         testfile = 'test_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
-    @pytest.mark.skip(reason='stopped working with python 3')
     def test_bullets_pipe(self):
         testfile = 'test_bullets_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
@@ -215,13 +216,11 @@ class PipeTests(unittest.TestCase):
         )
         self.assertEqual(expected, actual)
 
-    @pytest.mark.skip(reason='stopped working with python 3')
     def test_utf8_pipe(self):
         testfile = 'test_utf_dash_8_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
-    @pytest.mark.skip(reason='stopped working with python 3')
     def test_file_line_length_30_pipe(self):
         testfile = 'test_file_line_length_30_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
