@@ -48,7 +48,7 @@ def is_non_block(line):
 def is_bullet(line, para):
     if (
         para == '' or
-        re.search('^(\t|\s{2,})', line) or
+        re.search(r'^(\t|\s{2,})', line) or
         re.search(BULLET_REGEX, para)
     ) and re.search(BULLET_REGEX, line):
         return True
@@ -56,11 +56,16 @@ def is_bullet(line, para):
         return False
 
 
+def is_code_block_delimiter(line):
+    return re.match(r'^```(?!`)', line)
+
+
 def process_file(file_in, file_out):
 
     para = ''
     eol = ''
     block_in_progress = False
+    code_block_in_progress = False
 
     for line in file_in:
 
@@ -68,15 +73,31 @@ def process_file(file_in, file_out):
         eol = '\n' if '\n' in line else ''
 
         line = line.rstrip()
-        if line == '' or is_non_block(line) or is_bullet(line, para):
+        if (line == ''
+                or is_non_block(line)
+                or is_bullet(line, para)
+                or is_code_block_delimiter(line)
+                or code_block_in_progress):
+
             if block_in_progress:
                 block_in_progress = False
                 # [:-1] to trim trailing space
                 write_paragraph(para[:-1], file_out, eol='\n')
                 para = ''
 
-            if not is_bullet(line, para):
-                write_paragraph(line, file_out, eol=eol)
+            if is_code_block_delimiter(line):
+                if code_block_in_progress:
+                    code_block_in_progress = False
+                else:
+                    code_block_in_progress = True
+
+            if code_block_in_progress or not is_bullet(line, para):
+                write_paragraph(
+                    line,
+                    file_out,
+                    eol=eol,
+                    code_block_in_progress=code_block_in_progress
+                )
                 continue
 
         block_in_progress = True
@@ -98,9 +119,9 @@ def process_file(file_in, file_out):
     file_out.close()
 
 
-def write_paragraph(para, file_out, eol='\n'):
+def write_paragraph(para, file_out, eol='\n', code_block_in_progress=False):
 
-    if para == '' or is_non_block(para):
+    if para == '' or is_non_block(para) or code_block_in_progress:
         file_out.write(para + eol)
         return
 

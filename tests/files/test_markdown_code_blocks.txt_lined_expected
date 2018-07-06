@@ -1,0 +1,47 @@
+A code block:
+
+```
+Things in here
+shouldn't
+    be reformatted
+
+Nullam id dolor id nibh ultricies vehicula ut id elit. Vestibulum id ligula porta felis euismod semper.
+
+Nor should be things like this be treated like bullets:
+
+* Maecenas sed diam eget risus varius blandit sit amet non magna. Nulla vitae elit libero, a pharetra augue.
+```
+
+This is also a code block
+
+```python
+def is_non_block(line):
+    patterns = [
+        r'^[A-Za-z]+, \d{1,2} [A-Za-z]+ \d{4}$',  # date
+        r'^(~<|>~)',                              # excerpts
+        r'^\s*\|( |$)',                           # line quote
+        r'^(\s*:|\.\. )',                         # rst items
+        r'^[-#=~]{3,}',                           # separator/heading
+    ]
+
+    for pattern in patterns:
+        if re.search(pattern, line):
+            return True
+
+    return False
+```
+
+This doesn't start a code block ``` but could mess things up on a
+reformatted line if it ended up at the start of a line.
+
+```` This is not a code block starter
+
+
+It's better to have blank lines before fenced code blocks but let's
+still handle if not
+```
+blah
+    blah
+        blah
+```
+And we continue to do stuff

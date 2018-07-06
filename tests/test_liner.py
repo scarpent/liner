@@ -97,6 +97,11 @@ class FileTests(unittest.TestCase):
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
+    def test_markdown_code_blocks(self):
+        testfile = 'test_markdown_code_blocks.txt'
+        expected, actual = self.get_expected_and_actual(testfile)
+        self.assertEqual(expected, actual)
+
 
 class ClipboardTests(unittest.TestCase):
 
