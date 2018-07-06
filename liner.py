@@ -1,8 +1,4 @@
-#!/usr/bin/python
-
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
+#!/usr/bin/env python
 import codecs
 import os
 import re
@@ -11,12 +7,8 @@ import sys
 import tempfile
 from contextlib import contextmanager
 
-from arghandler import DEFAULT_LINE_LENGTH, ArgHandler
+from arghandler import DEFAULT_LINE_LENGTH, get_args
 
-__author__ = 'Scott Carpenter'
-__license__ = 'gpl v3 or greater'
-__email__ = 'scottc@movingtofreedom.org'
-__date__ = '$Mar 2, 2016 6:31 AM$'
 
 LINED_SUFFIX = '_lined'
 UTF_8 = 'utf-8'
@@ -204,11 +196,10 @@ def write_file(filepath, data):
 
 
 def main(argv=None):
-
     if argv is None:
         argv = sys.argv[1:]  # pragma: no cover
 
-    args = ArgHandler.get_args(argv)
+    args = get_args(argv)
 
     global line_length
     line_length = args.line_length
