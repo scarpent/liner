@@ -31,67 +31,67 @@ class FileTests(unittest.TestCase):
 
         return expected, actual
 
-    def testMainFileInput(self):
+    def test_main_file_input(self):
         testfile = 'test.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testBullets(self):
+    def test_bullets(self):
         testfile = 'test_bullets.txt'
         expected, actual = self.get_expected_and_actual(testfile, '40')
         self.assertEqual(expected, actual)
 
-    def testBulletsMoar(self):
+    def test_bullets_moar(self):
         testfile = 'test_bullets_moar.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testHeadings(self):
+    def test_headings(self):
         testfile = 'test_headings.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testNoEofNewline(self):
+    def test_no_eof_newline(self):
         testfile = 'test_eof_no_newline.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testEofNewline(self):
+    def test_eof_newline(self):
         testfile = 'test_eof_newline.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testJournalDate(self):
+    def test_journal_date(self):
         testfile = 'test_journal_date.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testExcerpt(self):
+    def test_excerpt(self):
         testfile = 'test_excerpt.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testLineQuote(self):
+    def test_line_quote(self):
         testfile = 'test_line_quote.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testIndent(self):
+    def test_indent(self):
         testfile = 'test_indented.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testRstItems(self):
+    def test_rst_items(self):
         testfile = 'test_rst_items.txt'
         expected, actual = self.get_expected_and_actual(testfile)
         self.assertEqual(expected, actual)
 
-    def testFileLineLength30(self):
+    def test_file_line_length_30(self):
         testfile = 'test_file_line_length_30.txt'
         expected, actual = self.get_expected_and_actual(testfile, '30')
         self.assertEqual(expected, actual)
 
-    def testUtfDash8(self):
+    def test_utf_dash8(self):
         """ utf8 encoding only "kind of" worked; utf-8 needed here """
         testfile = 'test_utf_dash_8.txt'
         expected, actual = self.get_expected_and_actual(testfile)
@@ -106,27 +106,27 @@ class ClipboardTests(unittest.TestCase):
     def tearDown(self):
         liner.set_clipboard_data(self.save_clipboard)
 
-    def testClipboard(self):
+    def test_clipboard(self):
         expected = "Blah blah blah blah"
         liner.set_clipboard_data(expected)
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testLineLengthLessThanOne(self):
+    def test_line_length_less_than_one(self):
         expected = 'Lorem ipsum dolor sit amet'
         liner.set_clipboard_data(expected)
         liner.main(['-c', '-l', 0])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testLineLengthLessThanOneAndNewline(self):
+    def test_line_length_less_than_one_and_newline(self):
         expected = 'Lorem ipsum dolor sit amet\n'
         liner.set_clipboard_data(expected)
         liner.main(['-c', '-l', '-1'])
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testLineLengthLessThanOneAndMultipleLines(self):
+    def test_line_length_less_than_one_and_multiple_lines(self):
         """ lines are joined """
         expected = (
             'Vivamus sagittis lacus vel augue laoreet rutrum '
@@ -143,14 +143,14 @@ class ClipboardTests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testLineLengthAsString(self):
+    def test_line_length_as_string(self):
         liner.set_clipboard_data('Lorem ipsum dolor sit amet')
         liner.main(['-c', '-l', '017'])
         expected = 'Lorem ipsum dolor\nsit amet'
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testTrailingWhitespace(self):
+    def test_trailing_whitespace(self):
         """ trailing whitespace is stripped """
         expected = '\n\nabc\n\n'
         text = ' \n\t\t\nabc \n    \n'
@@ -159,7 +159,7 @@ class ClipboardTests(unittest.TestCase):
         actual = liner.get_clipboard_data()
         self.assertEqual(expected, actual)
 
-    def testUtfEight(self):
+    def test_utf8(self):
         expected = '\u2122 \u2122 \u2122\n\u2122 \u2122 \u2122\n\u2122'
         text = '\u2122 \u2122 \u2122 \u2122 \u2122 \u2122 \u2122'
         liner.set_clipboard_data(text)
@@ -196,13 +196,13 @@ class PipeTests(unittest.TestCase):
         return expected, actual
 
     @pytest.mark.skip(reason='stopped working with python 3')
-    def testMainFileInputPipe(self):
+    def test_main_file_input_pipe(self):
         testfile = 'test_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
     @pytest.mark.skip(reason='stopped working with python 3')
-    def testBulletsPipe(self):
+    def test_bullets_pipe(self):
         testfile = 'test_bullets_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
             testfile,
@@ -211,13 +211,13 @@ class PipeTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     @pytest.mark.skip(reason='stopped working with python 3')
-    def testUtfDash8Pipe(self):
+    def test_utf8_pipe(self):
         testfile = 'test_utf_dash_8_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(testfile)
         self.assertEqual(expected, actual)
 
     @pytest.mark.skip(reason='stopped working with python 3')
-    def testFileLineLength30Pipe(self):
+    def test_file_line_length_30_pipe(self):
         testfile = 'test_file_line_length_30_pipe.txt'
         expected, actual = self.get_expected_and_actual_pipe(
             testfile,
