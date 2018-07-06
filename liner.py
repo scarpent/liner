@@ -12,7 +12,7 @@ from arghandler import DEFAULT_LINE_LENGTH, get_args
 
 LINED_SUFFIX = '_lined'
 UTF_8 = 'utf-8'
-BULLET_REGEX = r'^\s*([-*~]|[#\d]+\.) '
+BULLET_REGEX = r'^\s*([-*~+]|[#\d]+\.) '
 
 line_length = DEFAULT_LINE_LENGTH
 
