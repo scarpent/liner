@@ -5,3 +5,9 @@ hey, this is an excerpt
 Nulla vitae elit libero, a pharetra augue. Donec sed odio dui. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod.
 
 Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+`~<`
+This is an excerpt with code ticks.
+`>~`
+Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
+
+These ~< are >~ inline `~<` excerpts `>~`.
