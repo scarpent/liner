@@ -37,22 +37,15 @@ def is_non_block(line):
         r'^[-#=~]{3,}',                           # separator/heading
     ]
 
-    for pattern in patterns:
-        if re.search(pattern, line):
-            return True
-
-    return False
+    return any(re.search(pattern, line) for pattern in patterns)
 
 
 def is_bullet(line, para):
-    if (
-        para == '' or
-        re.search(r'^(\t|\s{2,})', line) or
-        re.search(BULLET_REGEX, para)
-    ) and re.search(BULLET_REGEX, line):
-        return True
-    else:
-        return False
+    return re.search(BULLET_REGEX, line) and (
+        para == ''
+        or re.search(r'^(\t|\s{2,})', line)
+        or re.search(BULLET_REGEX, para)
+    )
 
 
 def is_code_block_delimiter(line):
@@ -60,7 +53,6 @@ def is_code_block_delimiter(line):
 
 
 def process_file(file_in, file_out):
-
     para = ''
     eol = ''
     block_in_progress = False
