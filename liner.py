@@ -34,7 +34,7 @@ def is_non_block(line):
         r'^`?(~<|>~)`?',                          # excerpts
         r'^\s*\|( |$)',                           # line quote
         r'^(\s*:|\.\. )',                         # rst items
-        r'^[-#=~]{3,}',                           # separator/heading
+        r'^[-#=~]{3,}$',                          # separator/heading
     ]
 
     return any(re.search(pattern, line) for pattern in patterns)
@@ -77,10 +77,7 @@ def process_file(file_in, file_out):
                 para = ''
 
             if is_code_block_delimiter(line):
-                if code_block_in_progress:
-                    code_block_in_progress = False
-                else:
-                    code_block_in_progress = True
+                code_block_in_progress = not code_block_in_progress
 
             if code_block_in_progress or not is_bullet(line, para):
                 write_paragraph(
