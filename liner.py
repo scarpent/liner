@@ -41,11 +41,7 @@ def is_non_block(line):
 
 
 def is_bullet(line, para):
-    return re.search(BULLET_REGEX, line) and (
-        para == ''
-        or re.search(r'^(\t|\s{2,})', line)
-        or re.search(BULLET_REGEX, para)
-    )
+    return re.search(BULLET_REGEX, line)
 
 
 def is_code_block_delimiter(line):
