@@ -35,6 +35,8 @@ def is_non_block(line):
         r'^\s*\|( |$)',                           # line quote
         r'^(\s*:|\.\. )',                         # rst items
         r'^[-#=~]{3,}$',                          # separator/heading
+        r'^#{,5} ',                               # markdown heading
+        r'!\[',                                   # markdown image
     ]
 
     return any(re.search(pattern, line) for pattern in patterns)
